@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI Website Builder</title>
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    
+    <style>
+        /* CRITICAL: Mobile Viewport Fix */
+        body {
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #2d2d2d; }
+        ::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #777; }
+
+        /* Hide Sidebar on mobile initially, toggle via JS if needed, 
+           but for this single-file demo we use a responsive flex layout */
+        
+        .code-font { font-family: 'Fira Code', monospace; }
+        
+        iframe { border: none; background: white; width: 100%; height: 100%; }
+        
+        /* Loading Animation */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <aside class="w-64 bg-gray-900 border-r border-gray-700 flex flex-col flex-shrink-0 hidden md:flex transition-all duration-300" id="sidebar">
+        <div class="p-4 border-b border-gray-700">
+            <button onclick="createNewProject()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded flex items-center justify-center gap-2 transition-colors">
+                <i class="fas fa-plus"></i> New Project
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-2 space-y-1" id="projectList">
+            </div>
+
+        <div class="p-4 border-t border-gray-700">
+            <button onclick="toggleSettings()" class="w-full text-gray-400 hover:text-white flex items-center gap-2 p-2 rounded hover:bg-gray-800 transition-colors">
+                <i class="fas fa-cog"></i> Settings
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col min-w-0 bg-gray-800 relative">
+        
+        <header class="h-14 bg-gray-900 border-b border-gray-700 flex items-center justify-between px-4 flex-shrink-0">
+            <div class="flex items-center gap-4">
+                <button class="md:hidden text-gray-400" onclick="document.getElementById('sidebar').classList.toggle('hidden')">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="flex gap-2 group">
+                    <div class="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 cursor-pointer"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600 cursor-pointer"></div>
+                </div>
+                <span id="projectName" class="text-sm text-gray-400 font-mono ml-2 hidden sm:block">Untitled Project</span>
+            </div>
+
+            <div class="flex bg-gray-800 rounded p-1 border border-gray-700">
+                <button onclick="switchView('preview')" id="btnPreview" class="px-3 py-1 text-sm rounded bg-gray-700 text-white shadow">Preview</button>
+                <button onclick="switchView('code')" id="btnCode" class="px-3 py-1 text-sm rounded text-gray-400 hover:text-white">Code</button>
+            </div>
+
+            <button onclick="downloadCode()" class="text-gray-400 hover:text-blue-400 transition-colors" title="Download HTML">
+                <i class="fas fa-download"></i>
+            </button>
+        </header>
+
+        <div class="flex-1 relative overflow-hidden bg-gray-100">
+            <div id="previewContainer" class="absolute inset-0 z-10 w-full h-full">
+                <iframe id="previewFrame" sandbox="allow-scripts allow-same-origin"></iframe>
+                <div id="emptyState" class="absolute inset-0 flex items-center justify-center text-gray-400 bg-gray-800 z-20">
+                    <div class="text-center">
+                        <i class="fas fa-magic text-4xl mb-3 opacity-50"></i>
+                        <p>Describe a website to build it.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="codeContainer" class="absolute inset-0 z-0 w-full h-full bg-[#1e1e1e] hidden overflow-auto">
+                <textarea id="codeEditor" class="w-full h-full bg-[#1e1e1e] text-[#d4d4d4] p-4 code-font text-sm outline-none resize-none" spellcheck="false" readonly></textarea>
+            </div>
+            
+            <div id="loaderOverlay" class="absolute inset-0 bg-black/50 z-50 hidden flex items-center justify-center flex-col gap-3">
+                <div class="loader"></div>
+                <span class="text-white text-sm font-medium animate-pulse">Generating Code...</span>
+            </div>
+        </div>
+
+        <footer class="p-4 bg-gray-900 border-t border-gray-700 flex-shrink-0">
+            <div class="relative max-w-4xl mx-auto w-full">
+                <textarea 
+                    id="promptInput" 
+                    placeholder="Describe your website (e.g., 'A landing page for a coffee shop with a hero section')..." 
+                    class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg pl-4 pr-12 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none h-[60px]"
+                    onkeydown="handleEnter(event)"
+                ></textarea>
+                <button onclick="generateSite()" class="absolute right-3 top-3 text-blue-500 hover:text-blue-400 p-1">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </footer>
+    </main>
+
+    <div id="settingsModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-gray-800 rounded-lg shadow-xl w-full max-w-md border border-gray-700">
+            <div class="flex justify-between items-center p-4 border-b border-gray-700">
+                <h3 class="text-lg font-semibold text-white">Settings</h3>
+                <button onclick="toggleSettings()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="p-4 space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">API Endpoint</label>
+                    <input type="text" id="settingUrl" value="[https://openrouter.ai/api/v1/chat/completions](https://openrouter.ai/api/v1/chat/completions)" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">API Key</label>
+                    <input type="password" id="settingKey" placeholder="sk-or-..." class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Model ID</label>
+                    <input type="text" id="settingModel" value="deepseek/deepseek-r1:free" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-700 flex justify-end">
+                <button onclick="saveSettings()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONSTANTS & CONFIG ---
+        const SYSTEM_PROMPT = "You are a web developer. Output ONLY raw HTML code with embedded CSS in <style> tags and embedded JS in <script> tags. Do not wrap code in Markdown backticks. Do not include explanations. Ensure the code is responsive and complete.";
+        
+        // --- STATE MANAGEMENT ---
+        let state = {
+            projects: [],
+            currentProjectId: null,
+            settings: {
+                url: "[https://openrouter.ai/api/v1/chat/completions](https://openrouter.ai/api/v1/chat/completions)", // Forced Default
+                key: "",
+                model: "deepseek/deepseek-r1:free"
+            }
+        };
+
+        // --- DOM ELEMENTS ---
+        const els = {
+            sidebar: document.getElementById('projectList'),
+            previewFrame: document.getElementById('previewFrame'),
+            codeEditor: document.getElementById('codeEditor'),
+            previewContainer: document.getElementById('previewContainer'),
+            codeContainer: document.getElementById('codeContainer'),
+            emptyState: document.getElementById('emptyState'),
+            loader: document.getElementById('loaderOverlay'),
+            prompt: document.getElementById('promptInput'),
+            projectName: document.getElementById('projectName'),
+            modal: document.getElementById('settingsModal'),
+            inputs: {
+                url: document.getElementById('settingUrl'),
+                key: document.getElementById('settingKey'),
+                model: document.getElementById('settingModel')
+            },
+            btns: {
+                preview: document.getElementById('btnPreview'),
+                code: document.getElementById('btnCode')
+            }
+        };
+
+        // --- INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderSidebar();
+            
+            // Load most recent project or create one
+            if (state.projects.length > 0) {
+                loadProject(state.projects[0].id);
+            } else {
+                createNewProject();
+            }
+        });
+
+        // --- LOGIC: STORAGE ---
+        function loadState() {
+            const saved = localStorage.getItem('ai_builder_state');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                state.projects = parsed.projects || [];
+                // Merge settings to ensure URL is correct even if updated in future
+                state.settings = { ...state.settings, ...parsed.settings };
+            }
+            
+            // Populate Settings Modal
+            els.inputs.url.value = state.settings.url;
+            els.inputs.key.value = state.settings.key;
+            els.inputs.model.value = state.settings.model;
+        }
+
+        function saveState() {
+            localStorage.setItem('ai_builder_state', JSON.stringify(state));
+        }
+
+        // --- LOGIC: SETTINGS ---
+        function toggleSettings() {
+            els.modal.classList.toggle('hidden');
+        }
+
+        function saveSettings() {
+            state.settings.url = els.inputs.url.value.trim();
+            state.settings.key = els.inputs.key.value.trim();
+            state.settings.model = els.inputs.model.value.trim();
+            saveState();
+            toggleSettings();
+            alert("Settings Saved!");
+        }
+
+        // --- LOGIC: PROJECTS ---
+        function createNewProject() {
+            const newProject = {
+                id: Date.now().toString(),
+                name: `Project ${state.projects.length + 1}`,
+                code: "",
+                history: [] // Keep conversation context if needed, currently simplified
+            };
+            state.projects.unshift(newProject);
+            state.currentProjectId = newProject.id;
+            saveState();
+            renderSidebar();
+            loadProject(newProject.id);
+        }
+
+        function renderSidebar() {
+            els.sidebar.innerHTML = '';
+            state.projects.forEach(p => {
+                const div = document.createElement('div');
+                const isActive = p.id === state.currentProjectId;
+                div.className = `p-2 rounded cursor-pointer flex justify-between items-center group ${isActive ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-800'}`;
+                div.onclick = () => loadProject(p.id);
+                div.innerHTML = `
+                    <span class="truncate text-sm">${p.name}</span>
+                    <button onclick="deleteProject(event, '${p.id}')" class="opacity-0 group-hover:opacity-100 text-xs hover:text-red-400">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                els.sidebar.appendChild(div);
+            });
+        }
+
+        function deleteProject(e, id) {
+            e.stopPropagation();
+            if(!confirm("Delete this project?")) return;
+            state.projects = state.projects.filter(p => p.id !== id);
+            if (state.currentProjectId === id) {
+                state.currentProjectId = state.projects.length > 0 ? state.projects[0].id : null;
+            }
+            saveState();
+            renderSidebar();
+            if (state.currentProjectId) loadProject(state.currentProjectId);
+            else createNewProject();
+        }
+
+        function loadProject(id) {
+            state.currentProjectId = id;
+            const project = state.projects.find(p => p.id === id);
+            if (!project) return;
+
+            els.projectName.innerText = project.name;
+            updateWorkspace(project.code);
+            renderSidebar(); // Update active highlight
+        }
+
+        // --- LOGIC: UI UPDATES ---
+        function updateWorkspace(htmlCode) {
+            // Update Code Editor
+            els.codeEditor.value = htmlCode;
+            
+            // Update Preview
+            if (htmlCode.trim()) {
+                const blob = new Blob([htmlCode], { type: 'text/html' });
+                els.previewFrame.src = URL.createObjectURL(blob);
+                els.emptyState.classList.add('hidden');
+            } else {
+                els.previewFrame.src = 'about:blank';
+                els.emptyState.classList.remove('hidden');
+            }
+        }
+
+        function switchView(view) {
+            if (view === 'preview') {
+                els.previewContainer.classList.remove('hidden');
+                els.codeContainer.classList.add('hidden');
+                els.btns.preview.className = "px-3 py-1 text-sm rounded bg-gray-700 text-white shadow";
+                els.btns.code.className = "px-3 py-1 text-sm rounded text-gray-400 hover:text-white";
+            } else {
+                els.previewContainer.classList.add('hidden');
+                els.codeContainer.classList.remove('hidden');
+                els.btns.preview.className = "px-3 py-1 text-sm rounded text-gray-400 hover:text-white";
+                els.btns.code.className = "px-3 py-1 text-sm rounded bg-gray-700 text-white shadow";
+            }
+        }
+
+        function downloadCode() {
+            const project = state.projects.find(p => p.id === state.currentProjectId);
+            if (!project || !project.code) return alert("No code to download.");
+            
+            const blob = new Blob([project.code], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'index.html';
+            a.click();
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                generateSite();
+            }
+        }
+
+        // --- CORE LOGIC: API INTERACTION ---
+        async function generateSite() {
+            const prompt = els.prompt.value.trim();
+            if (!prompt) return;
+            
+            if (!state.settings.key) {
+                alert("Please enter your API Key in Settings.");
+                toggleSettings();
+                return;
+            }
+
+            // UI Loading State
+            els.loader.classList.remove('hidden');
+            els.prompt.disabled = true;
+
+            const project = state.projects.find(p => p.id === state.currentProjectId);
+            
+            // Construct Messages
+            const messages = [
+                { role: "system", content: SYSTEM_PROMPT },
+                // If there is existing code, pass it as context for iteration
+                ...(project.code ? [{ role: "assistant", content: project.code }] : []),
+                { role: "user", content: prompt }
+            ];
+
+            try {
+                // 1. Fetch
+                const response = await fetch(state.settings.url, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${state.settings.key}`,
+                        "Content-Type": "application/json",
+                        // Optional: "HTTP-Referer" for OpenRouter rankings
+                        "HTTP-Referer": window.location.href,
+                    },
+                    body: JSON.stringify({
+                        model: state.settings.model,
+                        messages: messages
+                    })
+                });
+
+                // 2. Anti-Crash Logic: Get Text First
+                const rawText = await response.text();
+
+                // 3. Check Status
+                if (!response.ok) {
+                    throw new Error(`API Error ${response.status}: ${rawText}`);
+                }
+
+                // 4. Safe Parse
+                const data = JSON.parse(rawText);
+                const content = data.choices[0].message.content;
+
+                // 5. Clean / Extract Code (Remove Markdown backticks if present)
+                let cleanCode = content;
+                // Regex to find content inside ```html ... ``` or just ``` ... ```
+                const codeBlockRegex = /```html\s*([\s\S]*?)\s*```|```\s*([\s\S]*?)\s*```/i;
+                const match = content.match(codeBlockRegex);
+                
+                if (match) {
+                    cleanCode = match[1] || match[2];
+                }
+                
+                // Update State
+                project.code = cleanCode;
+                
+                // If it's the first edit, rename project based on prompt
+                if (project.code.length < 50) { 
+                   // logic to rename could go here, for now keep "Project X"
+                }
+
+                saveState();
+                updateWorkspace(project.code);
+                els.prompt.value = ''; // Clear input
+
+            } catch (error) {
+                console.error(error);
+                alert(error.message);
+            } finally {
+                els.loader.classList.add('hidden');
+                els.prompt.disabled = false;
+                els.prompt.focus();
+            }
+        }
+    </script>
+</body>
+</html>
