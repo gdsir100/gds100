@@ -357,9 +357,12 @@
                     <h1 class="font-display text-3xl font-bold text-gray-900"><i class="fas fa-shield-halved text-brand-600 mr-2"></i>Admin Panel</h1>
                     <p class="text-gray-500">Manage your products and store</p>
                 </div>
-                <div class="flex gap-3">
+                <div class="flex gap-3 flex-wrap">
                     <button onclick="toggleAddProduct()" id="addProductBtn" class="bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
                         <i class="fas fa-plus mr-2"></i>Add Product
+                    </button>
+                    <button onclick="toggleChangeCredentials()" class="bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                        <i class="fas fa-key mr-2"></i>Change Login
                     </button>
                     <button onclick="adminLogout()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition-colors">
                         <i class="fas fa-sign-out-alt mr-2"></i>Logout
@@ -413,6 +416,39 @@
                         <i class="fas fa-check mr-2"></i>Save Product
                     </button>
                     <button onclick="toggleAddProduct()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-6 rounded-lg transition-colors">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+
+            <!-- Change Credentials Form -->
+            <div id="changeCredentialsForm" class="hidden mb-8 bg-white rounded-xl shadow-lg p-6 border fade-in">
+                <h3 class="text-xl font-bold text-gray-900 mb-4"><i class="fas fa-key mr-2 text-brand-600"></i>Change Login Credentials</h3>
+                <p class="text-sm text-gray-500 mb-4">Update your admin username and password. After changing, you will need to use the new credentials to log in next time.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Password *</label>
+                        <input type="password" id="credCurrentPass" placeholder="Enter current password" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none">
+                    </div>
+                    <div></div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">New Username</label>
+                        <input type="text" id="credNewUser" placeholder="Leave blank to keep current" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                        <input type="password" id="credNewPass" placeholder="Leave blank to keep current" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+                        <input type="password" id="credConfirmPass" placeholder="Re-enter new password" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none">
+                    </div>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button onclick="saveCredentials()" class="bg-gray-900 hover:bg-gray-800 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                        <i class="fas fa-save mr-2"></i>Save Credentials
+                    </button>
+                    <button onclick="toggleChangeCredentials()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-6 rounded-lg transition-colors">
                         Cancel
                     </button>
                 </div>
@@ -724,7 +760,7 @@
                     Cancel
                 </button>
             </div>
-            <p class="text-center text-xs text-gray-400 mt-4">Default: admin / admin123</p>
+            <p class="text-center text-xs text-gray-400 mt-4">Default credentials: admin / admin123 (change them in admin settings)</p>
         </div>
     </div>
 
@@ -836,8 +872,8 @@
 
     // ========== AUTH ==========
     let isAdminLoggedIn = sessionStorage.getItem('mmart_admin') === 'true';
-    const ADMIN_USER = 'admin';
-    const ADMIN_PASS = 'admin123';
+    let ADMIN_USER = localStorage.getItem('mmart_admin_user') || 'admin';
+    let ADMIN_PASS = localStorage.getItem('mmart_admin_pass') || 'admin123';
 
     function showAdminLogin() {
         document.getElementById('adminLoginModal').classList.remove('hidden');
@@ -872,6 +908,51 @@
         sessionStorage.removeItem('mmart_admin');
         showPage('home');
         showToast('Logged out from admin panel');
+    }
+
+    function toggleChangeCredentials() {
+        const form = document.getElementById('changeCredentialsForm');
+        form.classList.toggle('hidden');
+        if (!form.classList.contains('hidden')) {
+            document.getElementById('credCurrentPass').value = '';
+            document.getElementById('credNewUser').value = '';
+            document.getElementById('credNewPass').value = '';
+            document.getElementById('credConfirmPass').value = '';
+        }
+    }
+
+    function saveCredentials() {
+        const currentPass = document.getElementById('credCurrentPass').value;
+        const newUser = document.getElementById('credNewUser').value.trim();
+        const newPass = document.getElementById('credNewPass').value;
+        const confirmPass = document.getElementById('credConfirmPass').value;
+
+        if (currentPass !== ADMIN_PASS) {
+            showToast('Current password is incorrect!', 'error');
+            return;
+        }
+
+        if (newPass && newPass !== confirmPass) {
+            showToast('New passwords do not match!', 'error');
+            return;
+        }
+
+        if (newPass && newPass.length < 4) {
+            showToast('Password must be at least 4 characters!', 'error');
+            return;
+        }
+
+        if (newUser) {
+            ADMIN_USER = newUser;
+            localStorage.setItem('mmart_admin_user', ADMIN_USER);
+        }
+        if (newPass) {
+            ADMIN_PASS = newPass;
+            localStorage.setItem('mmart_admin_pass', ADMIN_PASS);
+        }
+
+        toggleChangeCredentials();
+        showToast('Credentials updated successfully! Use new credentials next login.');
     }
 
     function togglePasswordVisibility() {
