@@ -2,426 +2,1404 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI Website Builder</title>
-    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
-    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Tools Online - Free PDF Merge, Split, Compress & Convert | PDFToolKit</title>
+    <meta name="description" content="Free online PDF tools: Merge, Split, Compress, Convert PDF to Image, Image to PDF, Rotate, Add Watermark, Unlock, and Reorder pages. No signup required. 100% client-side processing.">
+    <meta name="keywords" content="PDF tools, merge PDF, split PDF, compress PDF, PDF to image, image to PDF, rotate PDF, watermark PDF, unlock PDF, reorder PDF pages, free PDF tools online">
+    <meta name="author" content="PDFToolKit">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://pdftoolkit.example.com/">
+    <meta property="og:title" content="PDFToolKit - Free Online PDF Tools">
+    <meta property="og:description" content="9 powerful PDF tools, all free, all running in your browser. No uploads to servers. Merge, split, compress, convert and more.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pdftoolkit.example.com/">
+    <meta property="og:image" content="https://pdftoolkit.example.com/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PDFToolKit - Free Online PDF Tools">
+    <meta name="twitter:description" content="9 powerful PDF tools running entirely in your browser. No file uploads. Free forever.">
+    <meta name="theme-color" content="#2563eb">
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "PDFToolKit",
+        "url": "https://pdftoolkit.example.com/",
+        "description": "Free online PDF tools for merging, splitting, compressing, and converting PDF files.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Merge PDF files",
+            "Split PDF pages",
+            "Compress PDF files",
+            "Convert PDF to Images",
+            "Convert Images to PDF",
+            "Rotate PDF pages",
+            "Add Watermark to PDF",
+            "Remove PDF password",
+            "Reorder PDF pages"
+        ]
+    }
+    </script>
     <style>
-        /* CRITICAL: Mobile Viewport Fix */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --bg: #f8fafc;
+            --bg-white: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --radius: 12px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+        }
         body {
-            min-height: 100dvh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* Header */
+        .header {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
             display: flex;
-            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .logo svg { width: 32px; height: 32px; }
+        .nav { display: flex; gap: 8px; align-items: center; }
+        .nav a, .nav button {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-light);
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .nav a:hover, .nav button:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+            padding: 4px;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+        .hero h1 span { color: var(--primary); }
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        /* Tools Grid */
+        .tools-section { max-width: 1200px; margin: 0 auto; padding: 40px 20px 60px; }
+        .tools-section h2 {
+            text-align: center;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 32px;
+        }
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .tool-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+        .tool-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: white;
+        }
+        .tool-card h3 { font-size: 1.125rem; font-weight: 700; margin-bottom: 8px; }
+        .tool-card p { font-size: 0.875rem; color: var(--text-light); }
+
+        /* Features */
+        .features {
+            background: var(--bg-white);
+            padding: 60px 20px;
+            border-top: 1px solid var(--border);
+        }
+        .features-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            text-align: center;
+        }
+        .feature-item h4 { font-size: 1rem; font-weight: 700; margin: 12px 0 8px; }
+        .feature-item p { font-size: 0.875rem; color: var(--text-light); }
+        .feature-icon {
+            width: 48px; height: 48px;
+            background: var(--primary-light);
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        /* Tool Workspace (shown when a tool is active) */
+        .workspace {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+        .workspace.active { display: block; }
+        .workspace-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .back-btn {
+            background: var(--primary-light);
+            color: var(--primary);
+            border: none;
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            font-size: 1.125rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .back-btn:hover { background: #bfdbfe; }
+        .workspace-header h2 { font-size: 1.5rem; font-weight: 700; }
+
+        /* Drop Zone */
+        .dropzone {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 48px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--bg-white);
+            position: relative;
+        }
+        .dropzone:hover, .dropzone.dragover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+        .dropzone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .dropzone-icon { font-size: 2rem; margin-bottom: 12px; color: var(--primary); }
+        .dropzone p { color: var(--text-light); font-size: 0.9rem; }
+
+        /* File list */
+        .file-list { margin: 16px 0; }
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+        }
+        .file-item .file-name {
             overflow: hidden;
-            background-color: #1e1e1e;
-            color: #e0e0e0;
-            font-family: 'Inter', sans-serif;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+            margin-right: 12px;
+        }
+        .file-item .file-size { color: var(--text-light); margin-right: 12px; white-space: nowrap; }
+        .file-item .remove-btn {
+            background: none; border: none; color: var(--danger); cursor: pointer; font-size: 1rem; padding: 4px;
         }
 
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #2d2d2d; }
-        ::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #777; }
-
-        /* Hide Sidebar on mobile initially, toggle via JS if needed, 
-           but for this single-file demo we use a responsive flex layout */
-        
-        .code-font { font-family: 'Fira Code', monospace; }
-        
-        iframe { border: none; background: white; width: 100%; height: 100%; }
-        
-        /* Loading Animation */
-        .loader {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3b82f6;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #16a34a; }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-outline:hover { background: var(--primary-light); }
+
+        /* Options panel */
+        .options-panel {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin: 16px 0;
+        }
+        .options-panel label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+        .options-panel input[type="text"],
+        .options-panel input[type="number"],
+        .options-panel input[type="password"],
+        .options-panel select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            margin-bottom: 16px;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .options-panel input:focus, .options-panel select:focus {
+            border-color: var(--primary);
+        }
+
+        /* Progress */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+            display: none;
+        }
+        .progress-bar.active { display: block; }
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+            transition: width 0.3s;
+            width: 0%;
+        }
+
+        /* Result area */
+        .result-area {
+            display: none;
+            text-align: center;
+            padding: 32px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: var(--radius);
+            margin-top: 16px;
+        }
+        .result-area.active { display: block; }
+        .result-area p { color: #166534; font-weight: 600; margin-bottom: 16px; }
+
+        /* Footer */
+        footer {
+            background: var(--text);
+            color: #94a3b8;
+            padding: 40px 20px;
+            font-size: 0.875rem;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+        }
+        .footer-col h4 { color: white; margin-bottom: 12px; font-weight: 700; }
+        .footer-col a { color: #94a3b8; display: block; margin-bottom: 8px; }
+        .footer-col a:hover { color: white; text-decoration: none; }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 24px auto 0;
+            padding-top: 24px;
+            border-top: 1px solid #334155;
+            text-align: center;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            max-width: 700px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 32px;
+            position: relative;
+        }
+        .modal h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; }
+        .modal p, .modal li { font-size: 0.9rem; color: var(--text-light); line-height: 1.8; }
+        .modal h3 { font-size: 1.1rem; margin: 20px 0 8px; color: var(--text); }
+        .modal ul { padding-left: 20px; margin-bottom: 12px; }
+        .modal-close {
+            position: absolute;
+            top: 16px; right: 16px;
+            background: none; border: none;
+            font-size: 1.25rem; cursor: pointer;
+            color: var(--text-light);
+            width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 8px;
+        }
+        .modal-close:hover { background: var(--bg); }
+
+        /* Sortable helper */
+        .sortable-ghost { opacity: 0.4; }
+        .drag-handle { cursor: grab; color: var(--text-light); margin-right: 12px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.75rem; }
+            .nav { display: none; }
+            .nav.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 64px; left: 0; right: 0;
+                background: var(--bg-white);
+                border-bottom: 1px solid var(--border);
+                padding: 12px;
+                box-shadow: var(--shadow-lg);
+                z-index: 99;
+            }
+            .hamburger { display: block; }
+            .tools-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
-    <aside class="w-64 bg-gray-900 border-r border-gray-700 flex flex-col flex-shrink-0 hidden md:flex transition-all duration-300" id="sidebar">
-        <div class="p-4 border-b border-gray-700">
-            <button onclick="createNewProject()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded flex items-center justify-center gap-2 transition-colors">
-                <i class="fas fa-plus"></i> New Project
-            </button>
+<!-- Header -->
+<header class="header" role="banner">
+    <div class="header-inner">
+        <div class="logo" onclick="showHome()" role="img" aria-label="PDFToolKit Logo">
+            <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#2563eb"/><text x="5" y="22" font-size="14" font-weight="bold" fill="white">PDF</text></svg>
+            PDFToolKit
         </div>
+        <button class="hamburger" onclick="this.nextElementSibling.classList.toggle('open')" aria-label="Toggle navigation">&#9776;</button>
+        <nav class="nav" role="navigation" aria-label="Main navigation">
+            <a href="#" onclick="showHome(); return false;">Home</a>
+            <a href="#" onclick="showHome(); document.getElementById('toolsSection').scrollIntoView({behavior:'smooth'}); return false;">Tools</a>
+            <button onclick="openModal('about')">About</button>
+            <button onclick="openModal('privacy')">Privacy</button>
+            <button onclick="openModal('terms')">Terms</button>
+            <button onclick="openModal('contact')">Contact</button>
+        </nav>
+    </div>
+</header>
 
-        <div class="flex-1 overflow-y-auto p-2 space-y-1" id="projectList">
-            </div>
+<!-- Main Homepage Content -->
+<div id="homePage">
+    <!-- Hero Section -->
+    <section class="hero" role="banner">
+        <h1>All-in-One <span>PDF Tools</span></h1>
+        <p>9 powerful tools to merge, split, compress, convert, and edit your PDF files. Free, fast, and 100% private -- everything runs in your browser.</p>
+    </section>
 
-        <div class="p-4 border-t border-gray-700">
-            <button onclick="toggleSettings()" class="w-full text-gray-400 hover:text-white flex items-center gap-2 p-2 rounded hover:bg-gray-800 transition-colors">
-                <i class="fas fa-cog"></i> Settings
-            </button>
+    <!-- Tools Grid -->
+    <section class="tools-section" id="toolsSection" aria-label="PDF Tools">
+        <h2>Choose a Tool</h2>
+        <div class="tools-grid" role="list">
+            <article class="tool-card" onclick="openTool('merge')" role="listitem" tabindex="0" aria-label="Merge PDF Tool">
+                <div class="tool-icon" style="background:#2563eb;">&#128279;</div>
+                <h3>Merge PDF</h3>
+                <p>Combine multiple PDF files into a single document in seconds.</p>
+            </article>
+            <article class="tool-card" onclick="openTool('split')" role="listitem" tabindex="0" aria-label="Split PDF Tool">
+                <div class="tool-icon" style="background:#7c3aed;">&#9986;</div>
+                <h3>Split PDF</h3>
+                <p>Extract specific pages or split a PDF into separate files.</p>
+            </article>
+            <article class="tool-card" onclick="openTool('compress')" role="listitem" tabindex="0" aria-label="Compress PDF Tool">
+                <div class="tool-icon" style="background:#059669;">&#128230;</div>
+                <h3>Compress PDF</h3>
+                <p>Reduce PDF file size while maintaining quality.</p>
+            </article>
+            <article class="tool-card" onclick="openTool('pdftoimage')" role="listitem" tabindex="0" aria-label="PDF to Image Tool">
+                <div class="tool-icon" style="background:#dc2626;">&#128444;</div>
+                <h3>PDF to Image</h3>
+                <p>Convert PDF pages to high-quality PNG or JPEG images.</p>
+            </article>
+            <article class="tool-card" onclick="openTool('imagetopdf')" role="listitem" tabindex="0" aria-label="Image to PDF Tool">
+                <div class="tool-icon" style="background:#ea580c;">&#128196;</div>
+                <h3>Image to PDF</h3>
+                <p>Convert JPG, PNG, or other images into a PDF document.</p>
+            </article>
+            <article class="tool-card" onclick="openTool('rotate')" role="listitem" tabindex="0" aria-label="Rotate PDF Tool">
+                <div class="tool-icon" style="background:#0891b2;">&#128260;</div>
+                <h3>Rotate PDF</h3>
+                <p>Rotate all or selected pages in your PDF file.</p>
+            </article>
+            <article class="tool-card" onclick="openTool('watermark')" role="listitem" tabindex="0" aria-label="Watermark PDF Tool">
+                <div class="tool-icon" style="background:#4f46e5;">&#128167;</div>
+                <h3>Watermark PDF</h3>
+                <p>Add text watermarks to protect your PDF documents.</p>
+            </article>
+            <article class="tool-card" onclick="openTool('unlock')" role="listitem" tabindex="0" aria-label="Unlock PDF Tool">
+                <div class="tool-icon" style="background:#b91c1c;">&#128275;</div>
+                <h3>Unlock PDF</h3>
+                <p>Remove password protection from your PDF files.</p>
+            </article>
+            <article class="tool-card" onclick="openTool('reorder')" role="listitem" tabindex="0" aria-label="Reorder PDF Pages Tool">
+                <div class="tool-icon" style="background:#65a30d;">&#128203;</div>
+                <h3>Reorder Pages</h3>
+                <p>Drag and drop to rearrange pages in your PDF.</p>
+            </article>
         </div>
-    </aside>
+    </section>
 
-    <main class="flex-1 flex flex-col min-w-0 bg-gray-800 relative">
-        
-        <header class="h-14 bg-gray-900 border-b border-gray-700 flex items-center justify-between px-4 flex-shrink-0">
-            <div class="flex items-center gap-4">
-                <button class="md:hidden text-gray-400" onclick="document.getElementById('sidebar').classList.toggle('hidden')">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="flex gap-2 group">
-                    <div class="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 cursor-pointer"></div>
-                    <div class="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer"></div>
-                    <div class="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600 cursor-pointer"></div>
-                </div>
-                <span id="projectName" class="text-sm text-gray-400 font-mono ml-2 hidden sm:block">Untitled Project</span>
+    <!-- Features Section -->
+    <section class="features" aria-label="Features">
+        <div class="features-inner">
+            <div class="feature-item">
+                <div class="feature-icon">&#128274;</div>
+                <h4>100% Private</h4>
+                <p>All processing happens locally in your browser. Your files never leave your device.</p>
             </div>
-
-            <div class="flex bg-gray-800 rounded p-1 border border-gray-700">
-                <button onclick="switchView('preview')" id="btnPreview" class="px-3 py-1 text-sm rounded bg-gray-700 text-white shadow">Preview</button>
-                <button onclick="switchView('code')" id="btnCode" class="px-3 py-1 text-sm rounded text-gray-400 hover:text-white">Code</button>
+            <div class="feature-item">
+                <div class="feature-icon">&#9889;</div>
+                <h4>Lightning Fast</h4>
+                <p>No server uploads. Instant processing powered by modern browser APIs.</p>
             </div>
-
-            <button onclick="downloadCode()" class="text-gray-400 hover:text-blue-400 transition-colors" title="Download HTML">
-                <i class="fas fa-download"></i>
-            </button>
-        </header>
-
-        <div class="flex-1 relative overflow-hidden bg-gray-100">
-            <div id="previewContainer" class="absolute inset-0 z-10 w-full h-full">
-                <iframe id="previewFrame" sandbox="allow-scripts allow-same-origin"></iframe>
-                <div id="emptyState" class="absolute inset-0 flex items-center justify-center text-gray-400 bg-gray-800 z-20">
-                    <div class="text-center">
-                        <i class="fas fa-magic text-4xl mb-3 opacity-50"></i>
-                        <p>Describe a website to build it.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="codeContainer" class="absolute inset-0 z-0 w-full h-full bg-[#1e1e1e] hidden overflow-auto">
-                <textarea id="codeEditor" class="w-full h-full bg-[#1e1e1e] text-[#d4d4d4] p-4 code-font text-sm outline-none resize-none" spellcheck="false" readonly></textarea>
-            </div>
-            
-            <div id="loaderOverlay" class="absolute inset-0 bg-black/50 z-50 hidden flex items-center justify-center flex-col gap-3">
-                <div class="loader"></div>
-                <span class="text-white text-sm font-medium animate-pulse">Generating Code...</span>
+            <div class="feature-item">
+                <div class="feature-icon">&#127873;</div>
+                <h4>Completely Free</h4>
+                <p>No hidden costs, no signups, no limits. Use all 9 tools without restrictions.</p>
             </div>
         </div>
+    </section>
+</div>
 
-        <footer class="p-4 bg-gray-900 border-t border-gray-700 flex-shrink-0">
-            <div class="relative max-w-4xl mx-auto w-full">
-                <textarea 
-                    id="promptInput" 
-                    placeholder="Describe your website (e.g., 'A landing page for a coffee shop with a hero section')..." 
-                    class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg pl-4 pr-12 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none h-[60px]"
-                    onkeydown="handleEnter(event)"
-                ></textarea>
-                <button onclick="generateSite()" class="absolute right-3 top-3 text-blue-500 hover:text-blue-400 p-1">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
-        </footer>
-    </main>
+<!-- Tool Workspaces -->
+<!-- MERGE -->
+<div class="workspace" id="workspace-merge">
+    <div class="workspace-header">
+        <button class="back-btn" onclick="showHome()" aria-label="Go back">&#8592;</button>
+        <h2>Merge PDF Files</h2>
+    </div>
+    <div class="dropzone" id="dropzone-merge">
+        <input type="file" accept=".pdf" multiple onchange="handleFiles(event, 'merge')">
+        <div class="dropzone-icon">&#128194;</div>
+        <p><strong>Click or drag & drop</strong> PDF files here<br>Select multiple files to merge</p>
+    </div>
+    <div class="file-list" id="filelist-merge"></div>
+    <div style="text-align:center; margin-top:16px;">
+        <button class="btn btn-primary" id="btn-merge" disabled onclick="doMerge()">&#128279; Merge PDFs</button>
+    </div>
+    <div class="progress-bar" id="progress-merge"><div class="progress-fill" id="progressfill-merge"></div></div>
+    <div class="result-area" id="result-merge"><p>&#10004; PDFs merged successfully!</p><button class="btn btn-success" id="download-merge">&#11015; Download Merged PDF</button></div>
+</div>
 
-    <div id="settingsModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4">
-        <div class="bg-gray-800 rounded-lg shadow-xl w-full max-w-md border border-gray-700">
-            <div class="flex justify-between items-center p-4 border-b border-gray-700">
-                <h3 class="text-lg font-semibold text-white">Settings</h3>
-                <button onclick="toggleSettings()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="p-4 space-y-4">
-                <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">API Endpoint</label>
-                    <input type="text" id="settingUrl" value="[https://openrouter.ai/api/v1/chat/completions](https://openrouter.ai/api/v1/chat/completions)" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">API Key</label>
-                    <input type="password" id="settingKey" placeholder="sk-or-..." class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Model ID</label>
-                    <input type="text" id="settingModel" value="deepseek/deepseek-r1:free" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-                </div>
-            </div>
-            <div class="p-4 border-t border-gray-700 flex justify-end">
-                <button onclick="saveSettings()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">Save Settings</button>
-            </div>
+<!-- SPLIT -->
+<div class="workspace" id="workspace-split">
+    <div class="workspace-header">
+        <button class="back-btn" onclick="showHome()">&#8592;</button>
+        <h2>Split PDF</h2>
+    </div>
+    <div class="dropzone" id="dropzone-split">
+        <input type="file" accept=".pdf" onchange="handleFiles(event, 'split')">
+        <div class="dropzone-icon">&#128194;</div>
+        <p><strong>Click or drag & drop</strong> a PDF file here</p>
+    </div>
+    <div class="file-list" id="filelist-split"></div>
+    <div class="options-panel" id="options-split" style="display:none;">
+        <label for="splitPages">Pages to extract (e.g. 1,3,5-8)</label>
+        <input type="text" id="splitPages" placeholder="1,2,3 or 1-5">
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+        <button class="btn btn-primary" id="btn-split" disabled onclick="doSplit()">&#9986; Split PDF</button>
+    </div>
+    <div class="progress-bar" id="progress-split"><div class="progress-fill" id="progressfill-split"></div></div>
+    <div class="result-area" id="result-split"><p>&#10004; PDF split successfully!</p><button class="btn btn-success" id="download-split">&#11015; Download Split PDF</button></div>
+</div>
+
+<!-- COMPRESS -->
+<div class="workspace" id="workspace-compress">
+    <div class="workspace-header">
+        <button class="back-btn" onclick="showHome()">&#8592;</button>
+        <h2>Compress PDF</h2>
+    </div>
+    <div class="dropzone" id="dropzone-compress">
+        <input type="file" accept=".pdf" onchange="handleFiles(event, 'compress')">
+        <div class="dropzone-icon">&#128194;</div>
+        <p><strong>Click or drag & drop</strong> a PDF file here</p>
+    </div>
+    <div class="file-list" id="filelist-compress"></div>
+    <div style="text-align:center; margin-top:16px;">
+        <button class="btn btn-primary" id="btn-compress" disabled onclick="doCompress()">&#128230; Compress PDF</button>
+    </div>
+    <div class="progress-bar" id="progress-compress"><div class="progress-fill" id="progressfill-compress"></div></div>
+    <div class="result-area" id="result-compress"><p>&#10004; PDF compressed!</p><span id="compress-info" style="display:block;margin-bottom:12px;color:#166534;font-size:0.875rem;"></span><button class="btn btn-success" id="download-compress">&#11015; Download Compressed PDF</button></div>
+</div>
+
+<!-- PDF TO IMAGE -->
+<div class="workspace" id="workspace-pdftoimage">
+    <div class="workspace-header">
+        <button class="back-btn" onclick="showHome()">&#8592;</button>
+        <h2>PDF to Image</h2>
+    </div>
+    <div class="dropzone" id="dropzone-pdftoimage">
+        <input type="file" accept=".pdf" onchange="handleFiles(event, 'pdftoimage')">
+        <div class="dropzone-icon">&#128194;</div>
+        <p><strong>Click or drag & drop</strong> a PDF file here</p>
+    </div>
+    <div class="file-list" id="filelist-pdftoimage"></div>
+    <div class="options-panel" id="options-pdftoimage" style="display:none;">
+        <label for="imageFormat">Output Format</label>
+        <select id="imageFormat">
+            <option value="png">PNG</option>
+            <option value="jpeg">JPEG</option>
+        </select>
+        <label for="imageScale">Scale (1-3)</label>
+        <input type="number" id="imageScale" value="2" min="1" max="3">
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+        <button class="btn btn-primary" id="btn-pdftoimage" disabled onclick="doPdfToImage()">&#128444; Convert to Images</button>
+    </div>
+    <div class="progress-bar" id="progress-pdftoimage"><div class="progress-fill" id="progressfill-pdftoimage"></div></div>
+    <div class="result-area" id="result-pdftoimage"><p>&#10004; Converted! Download images below.</p><div id="image-results"></div></div>
+</div>
+
+<!-- IMAGE TO PDF -->
+<div class="workspace" id="workspace-imagetopdf">
+    <div class="workspace-header">
+        <button class="back-btn" onclick="showHome()">&#8592;</button>
+        <h2>Image to PDF</h2>
+    </div>
+    <div class="dropzone" id="dropzone-imagetopdf">
+        <input type="file" accept="image/*" multiple onchange="handleFiles(event, 'imagetopdf')">
+        <div class="dropzone-icon">&#128444;</div>
+        <p><strong>Click or drag & drop</strong> images here (JPG, PNG, etc.)</p>
+    </div>
+    <div class="file-list" id="filelist-imagetopdf"></div>
+    <div style="text-align:center; margin-top:16px;">
+        <button class="btn btn-primary" id="btn-imagetopdf" disabled onclick="doImageToPdf()">&#128196; Convert to PDF</button>
+    </div>
+    <div class="progress-bar" id="progress-imagetopdf"><div class="progress-fill" id="progressfill-imagetopdf"></div></div>
+    <div class="result-area" id="result-imagetopdf"><p>&#10004; PDF created from images!</p><button class="btn btn-success" id="download-imagetopdf">&#11015; Download PDF</button></div>
+</div>
+
+<!-- ROTATE -->
+<div class="workspace" id="workspace-rotate">
+    <div class="workspace-header">
+        <button class="back-btn" onclick="showHome()">&#8592;</button>
+        <h2>Rotate PDF</h2>
+    </div>
+    <div class="dropzone" id="dropzone-rotate">
+        <input type="file" accept=".pdf" onchange="handleFiles(event, 'rotate')">
+        <div class="dropzone-icon">&#128194;</div>
+        <p><strong>Click or drag & drop</strong> a PDF file here</p>
+    </div>
+    <div class="file-list" id="filelist-rotate"></div>
+    <div class="options-panel" id="options-rotate" style="display:none;">
+        <label for="rotateDeg">Rotation Angle</label>
+        <select id="rotateDeg">
+            <option value="90">90 degrees clockwise</option>
+            <option value="180">180 degrees</option>
+            <option value="270">90 degrees counter-clockwise</option>
+        </select>
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+        <button class="btn btn-primary" id="btn-rotate" disabled onclick="doRotate()">&#128260; Rotate PDF</button>
+    </div>
+    <div class="progress-bar" id="progress-rotate"><div class="progress-fill" id="progressfill-rotate"></div></div>
+    <div class="result-area" id="result-rotate"><p>&#10004; PDF rotated successfully!</p><button class="btn btn-success" id="download-rotate">&#11015; Download Rotated PDF</button></div>
+</div>
+
+<!-- WATERMARK -->
+<div class="workspace" id="workspace-watermark">
+    <div class="workspace-header">
+        <button class="back-btn" onclick="showHome()">&#8592;</button>
+        <h2>Add Watermark to PDF</h2>
+    </div>
+    <div class="dropzone" id="dropzone-watermark">
+        <input type="file" accept=".pdf" onchange="handleFiles(event, 'watermark')">
+        <div class="dropzone-icon">&#128194;</div>
+        <p><strong>Click or drag & drop</strong> a PDF file here</p>
+    </div>
+    <div class="file-list" id="filelist-watermark"></div>
+    <div class="options-panel" id="options-watermark" style="display:none;">
+        <label for="watermarkText">Watermark Text</label>
+        <input type="text" id="watermarkText" placeholder="CONFIDENTIAL" value="CONFIDENTIAL">
+        <label for="watermarkOpacity">Opacity (0.1 - 1.0)</label>
+        <input type="number" id="watermarkOpacity" value="0.3" min="0.1" max="1" step="0.1">
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+        <button class="btn btn-primary" id="btn-watermark" disabled onclick="doWatermark()">&#128167; Add Watermark</button>
+    </div>
+    <div class="progress-bar" id="progress-watermark"><div class="progress-fill" id="progressfill-watermark"></div></div>
+    <div class="result-area" id="result-watermark"><p>&#10004; Watermark added!</p><button class="btn btn-success" id="download-watermark">&#11015; Download PDF</button></div>
+</div>
+
+<!-- UNLOCK -->
+<div class="workspace" id="workspace-unlock">
+    <div class="workspace-header">
+        <button class="back-btn" onclick="showHome()">&#8592;</button>
+        <h2>Unlock PDF</h2>
+    </div>
+    <div class="dropzone" id="dropzone-unlock">
+        <input type="file" accept=".pdf" onchange="handleFiles(event, 'unlock')">
+        <div class="dropzone-icon">&#128194;</div>
+        <p><strong>Click or drag & drop</strong> a password-protected PDF here</p>
+    </div>
+    <div class="file-list" id="filelist-unlock"></div>
+    <div class="options-panel" id="options-unlock" style="display:none;">
+        <label for="unlockPassword">PDF Password</label>
+        <input type="password" id="unlockPassword" placeholder="Enter the PDF password">
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+        <button class="btn btn-primary" id="btn-unlock" disabled onclick="doUnlock()">&#128275; Unlock PDF</button>
+    </div>
+    <div class="progress-bar" id="progress-unlock"><div class="progress-fill" id="progressfill-unlock"></div></div>
+    <div class="result-area" id="result-unlock"><p>&#10004; PDF unlocked!</p><button class="btn btn-success" id="download-unlock">&#11015; Download Unlocked PDF</button></div>
+</div>
+
+<!-- REORDER -->
+<div class="workspace" id="workspace-reorder">
+    <div class="workspace-header">
+        <button class="back-btn" onclick="showHome()">&#8592;</button>
+        <h2>Reorder PDF Pages</h2>
+    </div>
+    <div class="dropzone" id="dropzone-reorder">
+        <input type="file" accept=".pdf" onchange="handleFiles(event, 'reorder')">
+        <div class="dropzone-icon">&#128194;</div>
+        <p><strong>Click or drag & drop</strong> a PDF file here</p>
+    </div>
+    <div class="file-list" id="filelist-reorder"></div>
+    <div class="options-panel" id="options-reorder" style="display:none;">
+        <label>New page order (e.g. 3,1,2,5,4)</label>
+        <input type="text" id="reorderPages" placeholder="3,1,2,4,5">
+        <p style="font-size:0.8rem;color:var(--text-light);margin-top:-8px;" id="reorder-info"></p>
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+        <button class="btn btn-primary" id="btn-reorder" disabled onclick="doReorder()">&#128203; Reorder Pages</button>
+    </div>
+    <div class="progress-bar" id="progress-reorder"><div class="progress-fill" id="progressfill-reorder"></div></div>
+    <div class="result-area" id="result-reorder"><p>&#10004; Pages reordered!</p><button class="btn btn-success" id="download-reorder">&#11015; Download PDF</button></div>
+</div>
+
+<!-- Footer -->
+<footer role="contentinfo">
+    <div class="footer-inner">
+        <div class="footer-col">
+            <h4>PDFToolKit</h4>
+            <p style="line-height:1.8;">Free online PDF tools that run entirely in your browser. No file uploads, no data collection, no limits.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Tools</h4>
+            <a href="#" onclick="openTool('merge'); return false;">Merge PDF</a>
+            <a href="#" onclick="openTool('split'); return false;">Split PDF</a>
+            <a href="#" onclick="openTool('compress'); return false;">Compress PDF</a>
+            <a href="#" onclick="openTool('pdftoimage'); return false;">PDF to Image</a>
+            <a href="#" onclick="openTool('imagetopdf'); return false;">Image to PDF</a>
+        </div>
+        <div class="footer-col">
+            <h4>More Tools</h4>
+            <a href="#" onclick="openTool('rotate'); return false;">Rotate PDF</a>
+            <a href="#" onclick="openTool('watermark'); return false;">Watermark PDF</a>
+            <a href="#" onclick="openTool('unlock'); return false;">Unlock PDF</a>
+            <a href="#" onclick="openTool('reorder'); return false;">Reorder Pages</a>
+        </div>
+        <div class="footer-col">
+            <h4>Legal</h4>
+            <a href="#" onclick="openModal('privacy'); return false;">Privacy Policy</a>
+            <a href="#" onclick="openModal('terms'); return false;">Terms of Service</a>
+            <a href="#" onclick="openModal('about'); return false;">About Us</a>
+            <a href="#" onclick="openModal('contact'); return false;">Contact</a>
         </div>
     </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 PDFToolKit. All rights reserved. Built with care for your privacy.</p>
+    </div>
+</footer>
 
-    <script>
-        // --- CONSTANTS & CONFIG ---
-        const SYSTEM_PROMPT = "You are a web developer. Output ONLY raw HTML code with embedded CSS in <style> tags and embedded JS in <script> tags. Do not wrap code in Markdown backticks. Do not include explanations. Ensure the code is responsive and complete.";
-        
-        // --- STATE MANAGEMENT ---
-        let state = {
-            projects: [],
-            currentProjectId: null,
-            settings: {
-                url: "[https://openrouter.ai/api/v1/chat/completions](https://openrouter.ai/api/v1/chat/completions)", // Forced Default
-                key: "",
-                model: "deepseek/deepseek-r1:free"
+<!-- Modals -->
+<!-- Privacy Policy -->
+<div class="modal-overlay" id="modal-privacy">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal('privacy')">&times;</button>
+        <h2>Privacy Policy</h2>
+        <p><strong>Effective Date:</strong> January 1, 2024</p>
+        <h3>1. Introduction</h3>
+        <p>Welcome to PDFToolKit. Your privacy is critically important to us. This Privacy Policy explains how we handle information when you use our website and PDF tools.</p>
+        <h3>2. No Data Collection</h3>
+        <p>PDFToolKit processes all files entirely within your web browser using client-side JavaScript. We do not upload, store, transmit, or have access to any files you process using our tools. Your documents never leave your device.</p>
+        <h3>3. No Cookies or Tracking</h3>
+        <p>We do not use cookies, analytics trackers, or any form of user tracking. We do not collect personal information, IP addresses, or browsing behavior data.</p>
+        <h3>4. Third-Party Libraries</h3>
+        <p>We use open-source JavaScript libraries (pdf-lib, PDF.js) loaded from CDN providers. These CDNs may log standard access information per their own privacy policies. We have no control over or access to this data.</p>
+        <h3>5. External Links</h3>
+        <p>Our website may contain links to external sites. We are not responsible for the privacy practices of other websites.</p>
+        <h3>6. Children's Privacy</h3>
+        <p>Our service is not directed to children under 13. We do not knowingly collect information from children.</p>
+        <h3>7. Changes to This Policy</h3>
+        <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated effective date.</p>
+        <h3>8. Contact Us</h3>
+        <p>If you have any questions about this Privacy Policy, please contact us at privacy@pdftoolkit.example.com.</p>
+    </div>
+</div>
+
+<!-- Terms of Service -->
+<div class="modal-overlay" id="modal-terms">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal('terms')">&times;</button>
+        <h2>Terms of Service</h2>
+        <p><strong>Effective Date:</strong> January 1, 2024</p>
+        <h3>1. Acceptance of Terms</h3>
+        <p>By accessing and using PDFToolKit, you accept and agree to be bound by these Terms of Service. If you do not agree, please do not use our service.</p>
+        <h3>2. Description of Service</h3>
+        <p>PDFToolKit provides free, browser-based PDF processing tools. All file processing occurs locally on your device. We do not provide file storage, cloud processing, or server-side file manipulation.</p>
+        <h3>3. Use License</h3>
+        <p>You are granted a non-exclusive, non-transferable license to use PDFToolKit for personal and commercial purposes. You may not:</p>
+        <ul>
+            <li>Attempt to reverse engineer or extract the source code for commercial redistribution</li>
+            <li>Use the service for any unlawful purpose</li>
+            <li>Attempt to interfere with or disrupt the service</li>
+            <li>Remove any copyright or proprietary notices</li>
+        </ul>
+        <h3>4. Disclaimer of Warranties</h3>
+        <p>PDFToolKit is provided "as is" and "as available" without warranties of any kind, express or implied. We do not guarantee that the service will be error-free, uninterrupted, or that results will be accurate.</p>
+        <h3>5. Limitation of Liability</h3>
+        <p>In no event shall PDFToolKit, its creators, or affiliates be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the service, including but not limited to data loss or file corruption.</p>
+        <h3>6. User Responsibility</h3>
+        <p>You are solely responsible for the files you process and for maintaining backups of your original documents. We recommend always keeping copies of original files before processing.</p>
+        <h3>7. Intellectual Property</h3>
+        <p>All content, design, and code of PDFToolKit are protected by intellectual property laws. The tools utilize open-source libraries under their respective licenses (Apache 2.0, MIT).</p>
+        <h3>8. Modifications</h3>
+        <p>We reserve the right to modify these terms at any time. Continued use of the service after changes constitutes acceptance of the new terms.</p>
+        <h3>9. Governing Law</h3>
+        <p>These terms shall be governed by and construed in accordance with applicable laws, without regard to conflict of law principles.</p>
+        <h3>10. Contact</h3>
+        <p>Questions about these Terms should be sent to legal@pdftoolkit.example.com.</p>
+    </div>
+</div>
+
+<!-- About -->
+<div class="modal-overlay" id="modal-about">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal('about')">&times;</button>
+        <h2>About PDFToolKit</h2>
+        <p>PDFToolKit is a free, open-source collection of PDF tools that run entirely in your web browser. We believe that working with PDFs should be simple, fast, and private.</p>
+        <h3>Our Mission</h3>
+        <p>We created PDFToolKit because we were frustrated with existing PDF tools that require file uploads to remote servers, charge subscription fees, or bombard users with ads. Our mission is to provide high-quality PDF tools that respect your privacy.</p>
+        <h3>How It Works</h3>
+        <p>Every tool on PDFToolKit uses client-side JavaScript libraries to process your files directly in the browser. When you select a PDF file, it is read into your browser's memory, processed using pdf-lib and PDF.js, and the result is generated locally. At no point does your file leave your device.</p>
+        <h3>Technology</h3>
+        <ul>
+            <li><strong>pdf-lib</strong> - A powerful library for creating and modifying PDF documents in JavaScript</li>
+            <li><strong>PDF.js</strong> - Mozilla's PDF rendering library for converting PDFs to images</li>
+            <li><strong>Pure HTML/CSS/JS</strong> - No frameworks, no build tools, just a single HTML file</li>
+        </ul>
+        <h3>Open Source</h3>
+        <p>PDFToolKit is open source. You can inspect the code, contribute improvements, or fork it for your own use. Transparency is core to our privacy promise.</p>
+    </div>
+</div>
+
+<!-- Contact -->
+<div class="modal-overlay" id="modal-contact">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal('contact')">&times;</button>
+        <h2>Contact Us</h2>
+        <p>We would love to hear from you! Whether you have a feature request, bug report, or just want to say hello, feel free to reach out.</p>
+        <h3>Email</h3>
+        <p>General inquiries: <a href="mailto:hello@pdftoolkit.example.com">hello@pdftoolkit.example.com</a></p>
+        <p>Privacy concerns: <a href="mailto:privacy@pdftoolkit.example.com">privacy@pdftoolkit.example.com</a></p>
+        <p>Legal matters: <a href="mailto:legal@pdftoolkit.example.com">legal@pdftoolkit.example.com</a></p>
+        <h3>GitHub</h3>
+        <p>Found a bug or want to contribute? Visit our <a href="https://github.com/gdsir100/gds100" target="_blank" rel="noopener noreferrer">GitHub repository</a>.</p>
+        <h3>Response Time</h3>
+        <p>We typically respond within 1-2 business days. For urgent matters, please include "URGENT" in your email subject line.</p>
+    </div>
+</div>
+
+<script>
+// ===== GLOBAL STATE =====
+const toolFiles = {};
+const toolNames = ['merge','split','compress','pdftoimage','imagetopdf','rotate','watermark','unlock','reorder'];
+toolNames.forEach(t => toolFiles[t] = []);
+
+// PDF.js worker
+if (typeof pdfjsLib !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+// ===== NAVIGATION =====
+function showHome() {
+    document.getElementById('homePage').style.display = '';
+    document.querySelectorAll('.workspace').forEach(w => w.classList.remove('active'));
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function openTool(tool) {
+    document.getElementById('homePage').style.display = 'none';
+    document.querySelectorAll('.workspace').forEach(w => w.classList.remove('active'));
+    document.getElementById('workspace-' + tool).classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    // Close mobile nav
+    document.querySelectorAll('.nav').forEach(n => n.classList.remove('open'));
+}
+
+function openModal(name) {
+    document.getElementById('modal-' + name).classList.add('active');
+    document.querySelectorAll('.nav').forEach(n => n.classList.remove('open'));
+}
+
+function closeModal(name) {
+    document.getElementById('modal-' + name).classList.remove('active');
+}
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.classList.remove('active');
+    });
+});
+
+// ===== FILE HANDLING =====
+function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+}
+
+function handleFiles(event, tool) {
+    const files = Array.from(event.target.files);
+    if (!files.length) return;
+    files.forEach(f => toolFiles[tool].push(f));
+    renderFileList(tool);
+    event.target.value = '';
+
+    // Enable action button
+    const btn = document.getElementById('btn-' + tool);
+    if (btn) btn.disabled = false;
+
+    // Show options panel if exists
+    const opts = document.getElementById('options-' + tool);
+    if (opts) opts.style.display = '';
+
+    // Special: show page count for reorder
+    if (tool === 'reorder' && toolFiles.reorder.length > 0) {
+        loadReorderInfo();
+    }
+}
+
+function renderFileList(tool) {
+    const container = document.getElementById('filelist-' + tool);
+    container.innerHTML = toolFiles[tool].map((f, i) => `
+        <div class="file-item">
+            <span class="file-name">${f.name}</span>
+            <span class="file-size">${formatSize(f.size)}</span>
+            <button class="remove-btn" onclick="removeFile('${tool}', ${i})">&times;</button>
+        </div>
+    `).join('');
+}
+
+function removeFile(tool, index) {
+    toolFiles[tool].splice(index, 1);
+    renderFileList(tool);
+    if (toolFiles[tool].length === 0) {
+        const btn = document.getElementById('btn-' + tool);
+        if (btn) btn.disabled = true;
+        const opts = document.getElementById('options-' + tool);
+        if (opts) opts.style.display = 'none';
+    }
+}
+
+function readFileAsArrayBuffer(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+    });
+}
+
+function showProgress(tool, pct) {
+    const bar = document.getElementById('progress-' + tool);
+    const fill = document.getElementById('progressfill-' + tool);
+    bar.classList.add('active');
+    fill.style.width = pct + '%';
+}
+
+function hideProgress(tool) {
+    document.getElementById('progress-' + tool).classList.remove('active');
+}
+
+function showResult(tool) {
+    document.getElementById('result-' + tool).classList.add('active');
+}
+
+function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+// ===== TOOL 1: MERGE PDF =====
+async function doMerge() {
+    const files = toolFiles.merge;
+    if (files.length < 2) { alert('Please select at least 2 PDF files.'); return; }
+    try {
+        showProgress('merge', 10);
+        const mergedPdf = await PDFLib.PDFDocument.create();
+        for (let i = 0; i < files.length; i++) {
+            const bytes = await readFileAsArrayBuffer(files[i]);
+            const pdf = await PDFLib.PDFDocument.load(bytes);
+            const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+            pages.forEach(p => mergedPdf.addPage(p));
+            showProgress('merge', 10 + (80 * (i + 1) / files.length));
+        }
+        const mergedBytes = await mergedPdf.save();
+        showProgress('merge', 100);
+        const blob = new Blob([mergedBytes], {type: 'application/pdf'});
+        document.getElementById('download-merge').onclick = () => downloadBlob(blob, 'merged.pdf');
+        setTimeout(() => { hideProgress('merge'); showResult('merge'); }, 300);
+    } catch (e) {
+        hideProgress('merge');
+        alert('Error merging PDFs: ' + e.message);
+    }
+}
+
+// ===== TOOL 2: SPLIT PDF =====
+async function doSplit() {
+    const files = toolFiles.split;
+    if (!files.length) return;
+    const rangeStr = document.getElementById('splitPages').value.trim();
+    if (!rangeStr) { alert('Please specify pages to extract.'); return; }
+    try {
+        showProgress('split', 10);
+        const bytes = await readFileAsArrayBuffer(files[0]);
+        const srcPdf = await PDFLib.PDFDocument.load(bytes);
+        const totalPages = srcPdf.getPageCount();
+        const pageIndices = parsePageRange(rangeStr, totalPages);
+        if (!pageIndices.length) { hideProgress('split'); alert('Invalid page range.'); return; }
+
+        const newPdf = await PDFLib.PDFDocument.create();
+        const copiedPages = await newPdf.copyPages(srcPdf, pageIndices);
+        copiedPages.forEach(p => newPdf.addPage(p));
+        showProgress('split', 80);
+
+        const newBytes = await newPdf.save();
+        showProgress('split', 100);
+        const blob = new Blob([newBytes], {type: 'application/pdf'});
+        document.getElementById('download-split').onclick = () => downloadBlob(blob, 'split.pdf');
+        setTimeout(() => { hideProgress('split'); showResult('split'); }, 300);
+    } catch (e) {
+        hideProgress('split');
+        alert('Error splitting PDF: ' + e.message);
+    }
+}
+
+function parsePageRange(str, total) {
+    const indices = new Set();
+    str.split(',').forEach(part => {
+        part = part.trim();
+        if (part.includes('-')) {
+            const [a, b] = part.split('-').map(Number);
+            if (!isNaN(a) && !isNaN(b)) {
+                for (let i = Math.max(1, a); i <= Math.min(total, b); i++) indices.add(i - 1);
             }
-        };
+        } else {
+            const n = parseInt(part);
+            if (!isNaN(n) && n >= 1 && n <= total) indices.add(n - 1);
+        }
+    });
+    return Array.from(indices).sort((a, b) => a - b);
+}
 
-        // --- DOM ELEMENTS ---
-        const els = {
-            sidebar: document.getElementById('projectList'),
-            previewFrame: document.getElementById('previewFrame'),
-            codeEditor: document.getElementById('codeEditor'),
-            previewContainer: document.getElementById('previewContainer'),
-            codeContainer: document.getElementById('codeContainer'),
-            emptyState: document.getElementById('emptyState'),
-            loader: document.getElementById('loaderOverlay'),
-            prompt: document.getElementById('promptInput'),
-            projectName: document.getElementById('projectName'),
-            modal: document.getElementById('settingsModal'),
-            inputs: {
-                url: document.getElementById('settingUrl'),
-                key: document.getElementById('settingKey'),
-                model: document.getElementById('settingModel')
-            },
-            btns: {
-                preview: document.getElementById('btnPreview'),
-                code: document.getElementById('btnCode')
-            }
-        };
+// ===== TOOL 3: COMPRESS PDF =====
+async function doCompress() {
+    const files = toolFiles.compress;
+    if (!files.length) return;
+    try {
+        showProgress('compress', 10);
+        const bytes = await readFileAsArrayBuffer(files[0]);
+        const originalSize = bytes.byteLength;
+        const srcPdf = await PDFLib.PDFDocument.load(bytes);
+        showProgress('compress', 40);
 
-        // --- INITIALIZATION ---
-        window.addEventListener('DOMContentLoaded', () => {
-            loadState();
-            renderSidebar();
-            
-            // Load most recent project or create one
-            if (state.projects.length > 0) {
-                loadProject(state.projects[0].id);
+        // Re-create with stripped metadata for compression
+        const newPdf = await PDFLib.PDFDocument.create();
+        const pages = await newPdf.copyPages(srcPdf, srcPdf.getPageIndices());
+        pages.forEach(p => newPdf.addPage(p));
+        showProgress('compress', 70);
+
+        const compressedBytes = await newPdf.save({
+            useObjectStreams: true,
+            addDefaultPage: false,
+        });
+        showProgress('compress', 100);
+
+        const newSize = compressedBytes.length;
+        const saved = originalSize - newSize;
+        const pct = ((saved / originalSize) * 100).toFixed(1);
+
+        document.getElementById('compress-info').textContent =
+            `Original: ${formatSize(originalSize)} → Compressed: ${formatSize(newSize)} (${pct}% ${saved > 0 ? 'smaller' : 'change'})`;
+
+        const blob = new Blob([compressedBytes], {type: 'application/pdf'});
+        document.getElementById('download-compress').onclick = () => downloadBlob(blob, 'compressed.pdf');
+        setTimeout(() => { hideProgress('compress'); showResult('compress'); }, 300);
+    } catch (e) {
+        hideProgress('compress');
+        alert('Error compressing PDF: ' + e.message);
+    }
+}
+
+// ===== TOOL 4: PDF TO IMAGE =====
+async function doPdfToImage() {
+    const files = toolFiles.pdftoimage;
+    if (!files.length) return;
+    const format = document.getElementById('imageFormat').value;
+    const scale = parseFloat(document.getElementById('imageScale').value) || 2;
+    try {
+        showProgress('pdftoimage', 5);
+        const bytes = await readFileAsArrayBuffer(files[0]);
+        const pdf = await pdfjsLib.getDocument({data: bytes}).promise;
+        const totalPages = pdf.numPages;
+        const container = document.getElementById('image-results');
+        container.innerHTML = '';
+
+        for (let i = 1; i <= totalPages; i++) {
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({scale});
+            const canvas = document.createElement('canvas');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            const ctx = canvas.getContext('2d');
+            await page.render({canvasContext: ctx, viewport}).promise;
+
+            const mimeType = format === 'jpeg' ? 'image/jpeg' : 'image/png';
+            const dataUrl = canvas.toDataURL(mimeType, 0.92);
+
+            const wrapper = document.createElement('div');
+            wrapper.style.cssText = 'margin:12px 0;text-align:center;';
+            const img = document.createElement('img');
+            img.src = dataUrl;
+            img.style.cssText = 'max-width:100%;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:8px;';
+            img.alt = 'Page ' + i;
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = `page-${i}.${format}`;
+            link.className = 'btn btn-outline';
+            link.style.cssText = 'font-size:0.8rem;padding:6px 12px;';
+            link.textContent = `Download Page ${i}`;
+            wrapper.appendChild(img);
+            wrapper.appendChild(link);
+            container.appendChild(wrapper);
+
+            showProgress('pdftoimage', 5 + (90 * i / totalPages));
+        }
+        showProgress('pdftoimage', 100);
+        setTimeout(() => { hideProgress('pdftoimage'); showResult('pdftoimage'); }, 300);
+    } catch (e) {
+        hideProgress('pdftoimage');
+        alert('Error converting PDF to images: ' + e.message);
+    }
+}
+
+// ===== TOOL 5: IMAGE TO PDF =====
+async function doImageToPdf() {
+    const files = toolFiles.imagetopdf;
+    if (!files.length) return;
+    try {
+        showProgress('imagetopdf', 10);
+        const pdfDoc = await PDFLib.PDFDocument.create();
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const bytes = await readFileAsArrayBuffer(file);
+            let img;
+            if (file.type === 'image/png') {
+                img = await pdfDoc.embedPng(bytes);
             } else {
-                createNewProject();
+                img = await pdfDoc.embedJpg(bytes);
             }
+            const page = pdfDoc.addPage([img.width, img.height]);
+            page.drawImage(img, {x: 0, y: 0, width: img.width, height: img.height});
+            showProgress('imagetopdf', 10 + (80 * (i + 1) / files.length));
+        }
+
+        const pdfBytes = await pdfDoc.save();
+        showProgress('imagetopdf', 100);
+        const blob = new Blob([pdfBytes], {type: 'application/pdf'});
+        document.getElementById('download-imagetopdf').onclick = () => downloadBlob(blob, 'images.pdf');
+        setTimeout(() => { hideProgress('imagetopdf'); showResult('imagetopdf'); }, 300);
+    } catch (e) {
+        hideProgress('imagetopdf');
+        alert('Error converting images to PDF: ' + e.message);
+    }
+}
+
+// ===== TOOL 6: ROTATE PDF =====
+async function doRotate() {
+    const files = toolFiles.rotate;
+    if (!files.length) return;
+    const degrees = parseInt(document.getElementById('rotateDeg').value);
+    try {
+        showProgress('rotate', 10);
+        const bytes = await readFileAsArrayBuffer(files[0]);
+        const pdfDoc = await PDFLib.PDFDocument.load(bytes);
+        const pages = pdfDoc.getPages();
+        pages.forEach(p => p.setRotation(PDFLib.degrees(p.getRotation().angle + degrees)));
+        showProgress('rotate', 70);
+        const rotatedBytes = await pdfDoc.save();
+        showProgress('rotate', 100);
+        const blob = new Blob([rotatedBytes], {type: 'application/pdf'});
+        document.getElementById('download-rotate').onclick = () => downloadBlob(blob, 'rotated.pdf');
+        setTimeout(() => { hideProgress('rotate'); showResult('rotate'); }, 300);
+    } catch (e) {
+        hideProgress('rotate');
+        alert('Error rotating PDF: ' + e.message);
+    }
+}
+
+// ===== TOOL 7: WATERMARK PDF =====
+async function doWatermark() {
+    const files = toolFiles.watermark;
+    if (!files.length) return;
+    const text = document.getElementById('watermarkText').value.trim();
+    const opacity = parseFloat(document.getElementById('watermarkOpacity').value) || 0.3;
+    if (!text) { alert('Please enter watermark text.'); return; }
+    try {
+        showProgress('watermark', 10);
+        const bytes = await readFileAsArrayBuffer(files[0]);
+        const pdfDoc = await PDFLib.PDFDocument.load(bytes);
+        const font = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+        const pages = pdfDoc.getPages();
+
+        pages.forEach((page, i) => {
+            const {width, height} = page.getSize();
+            const fontSize = Math.min(width, height) * 0.1;
+            const textWidth = font.widthOfTextAtSize(text, fontSize);
+            page.drawText(text, {
+                x: (width - textWidth) / 2,
+                y: height / 2,
+                size: fontSize,
+                font: font,
+                color: PDFLib.rgb(0.5, 0.5, 0.5),
+                opacity: opacity,
+                rotate: PDFLib.degrees(-45),
+            });
+            showProgress('watermark', 10 + (80 * (i + 1) / pages.length));
         });
 
-        // --- LOGIC: STORAGE ---
-        function loadState() {
-            const saved = localStorage.getItem('ai_builder_state');
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                state.projects = parsed.projects || [];
-                // Merge settings to ensure URL is correct even if updated in future
-                state.settings = { ...state.settings, ...parsed.settings };
-            }
-            
-            // Populate Settings Modal
-            els.inputs.url.value = state.settings.url;
-            els.inputs.key.value = state.settings.key;
-            els.inputs.model.value = state.settings.model;
+        const wmBytes = await pdfDoc.save();
+        showProgress('watermark', 100);
+        const blob = new Blob([wmBytes], {type: 'application/pdf'});
+        document.getElementById('download-watermark').onclick = () => downloadBlob(blob, 'watermarked.pdf');
+        setTimeout(() => { hideProgress('watermark'); showResult('watermark'); }, 300);
+    } catch (e) {
+        hideProgress('watermark');
+        alert('Error adding watermark: ' + e.message);
+    }
+}
+
+// ===== TOOL 8: UNLOCK PDF =====
+async function doUnlock() {
+    const files = toolFiles.unlock;
+    if (!files.length) return;
+    const password = document.getElementById('unlockPassword').value;
+    try {
+        showProgress('unlock', 10);
+        const bytes = await readFileAsArrayBuffer(files[0]);
+        showProgress('unlock', 30);
+        const pdfDoc = await PDFLib.PDFDocument.load(bytes, {
+            password: password,
+            ignoreEncryption: true,
+        });
+        showProgress('unlock', 70);
+        const newPdf = await PDFLib.PDFDocument.create();
+        const pages = await newPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
+        pages.forEach(p => newPdf.addPage(p));
+        const unlockedBytes = await newPdf.save();
+        showProgress('unlock', 100);
+        const blob = new Blob([unlockedBytes], {type: 'application/pdf'});
+        document.getElementById('download-unlock').onclick = () => downloadBlob(blob, 'unlocked.pdf');
+        setTimeout(() => { hideProgress('unlock'); showResult('unlock'); }, 300);
+    } catch (e) {
+        hideProgress('unlock');
+        alert('Error unlocking PDF: ' + e.message);
+    }
+}
+
+// ===== TOOL 9: REORDER PAGES =====
+async function loadReorderInfo() {
+    const files = toolFiles.reorder;
+    if (!files.length) return;
+    try {
+        const bytes = await readFileAsArrayBuffer(files[0]);
+        const pdf = await PDFLib.PDFDocument.load(bytes);
+        const count = pdf.getPageCount();
+        document.getElementById('reorder-info').textContent =
+            `This PDF has ${count} pages. Enter the new order (e.g. ${Array.from({length: count}, (_, i) => i + 1).join(',')})`;
+        document.getElementById('reorderPages').placeholder =
+            Array.from({length: count}, (_, i) => i + 1).join(',');
+    } catch (e) {
+        document.getElementById('reorder-info').textContent = 'Could not read page count.';
+    }
+}
+
+async function doReorder() {
+    const files = toolFiles.reorder;
+    if (!files.length) return;
+    const orderStr = document.getElementById('reorderPages').value.trim();
+    if (!orderStr) { alert('Please enter the new page order.'); return; }
+    try {
+        showProgress('reorder', 10);
+        const bytes = await readFileAsArrayBuffer(files[0]);
+        const srcPdf = await PDFLib.PDFDocument.load(bytes);
+        const total = srcPdf.getPageCount();
+
+        const order = orderStr.split(',').map(s => parseInt(s.trim()) - 1);
+        const valid = order.every(i => !isNaN(i) && i >= 0 && i < total);
+        if (!valid) { hideProgress('reorder'); alert('Invalid page numbers. Use numbers 1 to ' + total + '.'); return; }
+
+        const newPdf = await PDFLib.PDFDocument.create();
+        const copiedPages = await newPdf.copyPages(srcPdf, order);
+        copiedPages.forEach(p => newPdf.addPage(p));
+        showProgress('reorder', 80);
+
+        const newBytes = await newPdf.save();
+        showProgress('reorder', 100);
+        const blob = new Blob([newBytes], {type: 'application/pdf'});
+        document.getElementById('download-reorder').onclick = () => downloadBlob(blob, 'reordered.pdf');
+        setTimeout(() => { hideProgress('reorder'); showResult('reorder'); }, 300);
+    } catch (e) {
+        hideProgress('reorder');
+        alert('Error reordering pages: ' + e.message);
+    }
+}
+
+// ===== DRAG & DROP SUPPORT =====
+document.querySelectorAll('.dropzone').forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('dragover');
+        const input = zone.querySelector('input[type="file"]');
+        if (e.dataTransfer.files.length) {
+            input.files = e.dataTransfer.files;
+            input.dispatchEvent(new Event('change'));
         }
+    });
+});
+</script>
 
-        function saveState() {
-            localStorage.setItem('ai_builder_state', JSON.stringify(state));
-        }
-
-        // --- LOGIC: SETTINGS ---
-        function toggleSettings() {
-            els.modal.classList.toggle('hidden');
-        }
-
-        function saveSettings() {
-            state.settings.url = els.inputs.url.value.trim();
-            state.settings.key = els.inputs.key.value.trim();
-            state.settings.model = els.inputs.model.value.trim();
-            saveState();
-            toggleSettings();
-            alert("Settings Saved!");
-        }
-
-        // --- LOGIC: PROJECTS ---
-        function createNewProject() {
-            const newProject = {
-                id: Date.now().toString(),
-                name: `Project ${state.projects.length + 1}`,
-                code: "",
-                history: [] // Keep conversation context if needed, currently simplified
-            };
-            state.projects.unshift(newProject);
-            state.currentProjectId = newProject.id;
-            saveState();
-            renderSidebar();
-            loadProject(newProject.id);
-        }
-
-        function renderSidebar() {
-            els.sidebar.innerHTML = '';
-            state.projects.forEach(p => {
-                const div = document.createElement('div');
-                const isActive = p.id === state.currentProjectId;
-                div.className = `p-2 rounded cursor-pointer flex justify-between items-center group ${isActive ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-800'}`;
-                div.onclick = () => loadProject(p.id);
-                div.innerHTML = `
-                    <span class="truncate text-sm">${p.name}</span>
-                    <button onclick="deleteProject(event, '${p.id}')" class="opacity-0 group-hover:opacity-100 text-xs hover:text-red-400">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                `;
-                els.sidebar.appendChild(div);
-            });
-        }
-
-        function deleteProject(e, id) {
-            e.stopPropagation();
-            if(!confirm("Delete this project?")) return;
-            state.projects = state.projects.filter(p => p.id !== id);
-            if (state.currentProjectId === id) {
-                state.currentProjectId = state.projects.length > 0 ? state.projects[0].id : null;
-            }
-            saveState();
-            renderSidebar();
-            if (state.currentProjectId) loadProject(state.currentProjectId);
-            else createNewProject();
-        }
-
-        function loadProject(id) {
-            state.currentProjectId = id;
-            const project = state.projects.find(p => p.id === id);
-            if (!project) return;
-
-            els.projectName.innerText = project.name;
-            updateWorkspace(project.code);
-            renderSidebar(); // Update active highlight
-        }
-
-        // --- LOGIC: UI UPDATES ---
-        function updateWorkspace(htmlCode) {
-            // Update Code Editor
-            els.codeEditor.value = htmlCode;
-            
-            // Update Preview
-            if (htmlCode.trim()) {
-                const blob = new Blob([htmlCode], { type: 'text/html' });
-                els.previewFrame.src = URL.createObjectURL(blob);
-                els.emptyState.classList.add('hidden');
-            } else {
-                els.previewFrame.src = 'about:blank';
-                els.emptyState.classList.remove('hidden');
-            }
-        }
-
-        function switchView(view) {
-            if (view === 'preview') {
-                els.previewContainer.classList.remove('hidden');
-                els.codeContainer.classList.add('hidden');
-                els.btns.preview.className = "px-3 py-1 text-sm rounded bg-gray-700 text-white shadow";
-                els.btns.code.className = "px-3 py-1 text-sm rounded text-gray-400 hover:text-white";
-            } else {
-                els.previewContainer.classList.add('hidden');
-                els.codeContainer.classList.remove('hidden');
-                els.btns.preview.className = "px-3 py-1 text-sm rounded text-gray-400 hover:text-white";
-                els.btns.code.className = "px-3 py-1 text-sm rounded bg-gray-700 text-white shadow";
-            }
-        }
-
-        function downloadCode() {
-            const project = state.projects.find(p => p.id === state.currentProjectId);
-            if (!project || !project.code) return alert("No code to download.");
-            
-            const blob = new Blob([project.code], { type: 'text/html' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'index.html';
-            a.click();
-        }
-
-        function handleEnter(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                generateSite();
-            }
-        }
-
-        // --- CORE LOGIC: API INTERACTION ---
-        async function generateSite() {
-            const prompt = els.prompt.value.trim();
-            if (!prompt) return;
-            
-            if (!state.settings.key) {
-                alert("Please enter your API Key in Settings.");
-                toggleSettings();
-                return;
-            }
-
-            // UI Loading State
-            els.loader.classList.remove('hidden');
-            els.prompt.disabled = true;
-
-            const project = state.projects.find(p => p.id === state.currentProjectId);
-            
-            // Construct Messages
-            const messages = [
-                { role: "system", content: SYSTEM_PROMPT },
-                // If there is existing code, pass it as context for iteration
-                ...(project.code ? [{ role: "assistant", content: project.code }] : []),
-                { role: "user", content: prompt }
-            ];
-
-            try {
-                // 1. Fetch
-                const response = await fetch(state.settings.url, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${state.settings.key}`,
-                        "Content-Type": "application/json",
-                        // Optional: "HTTP-Referer" for OpenRouter rankings
-                        "HTTP-Referer": window.location.href,
-                    },
-                    body: JSON.stringify({
-                        model: state.settings.model,
-                        messages: messages
-                    })
-                });
-
-                // 2. Anti-Crash Logic: Get Text First
-                const rawText = await response.text();
-
-                // 3. Check Status
-                if (!response.ok) {
-                    throw new Error(`API Error ${response.status}: ${rawText}`);
-                }
-
-                // 4. Safe Parse
-                const data = JSON.parse(rawText);
-                const content = data.choices[0].message.content;
-
-                // 5. Clean / Extract Code (Remove Markdown backticks if present)
-                let cleanCode = content;
-                // Regex to find content inside ```html ... ``` or just ``` ... ```
-                const codeBlockRegex = /```html\s*([\s\S]*?)\s*```|```\s*([\s\S]*?)\s*```/i;
-                const match = content.match(codeBlockRegex);
-                
-                if (match) {
-                    cleanCode = match[1] || match[2];
-                }
-                
-                // Update State
-                project.code = cleanCode;
-                
-                // If it's the first edit, rename project based on prompt
-                if (project.code.length < 50) { 
-                   // logic to rename could go here, for now keep "Project X"
-                }
-
-                saveState();
-                updateWorkspace(project.code);
-                els.prompt.value = ''; // Clear input
-
-            } catch (error) {
-                console.error(error);
-                alert(error.message);
-            } finally {
-                els.loader.classList.add('hidden');
-                els.prompt.disabled = false;
-                els.prompt.focus();
-            }
-        }
-    </script>
 </body>
 </html>
