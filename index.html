@@ -2,426 +2,1825 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI Website Builder</title>
-    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
-    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMART - Trust is Must | Est. 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f3ffe3',
+                            100: '#e2ffc2',
+                            200: '#c5ff85',
+                            300: '#a8ff48',
+                            400: '#b8f547',
+                            500: '#a3e635',
+                            600: '#84cc16',
+                            700: '#65a30d',
+                            800: '#4d7c0f',
+                            900: '#365314',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* CRITICAL: Mobile Viewport Fix */
-        body {
-            min-height: 100dvh;
-            display: flex;
-            flex-direction: row;
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .font-display { font-family: 'Playfair Display', serif; }
+        
+        .banner-gradient {
+            background: linear-gradient(135deg, #b8f547 0%, #84cc16 50%, #65a30d 100%);
+        }
+        
+        /* Professional Hero */
+        .hero-section {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0f172a 100%);
+            position: relative;
             overflow: hidden;
-            background-color: #1e1e1e;
-            color: #e0e0e0;
-            font-family: 'Inter', sans-serif;
         }
-
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #2d2d2d; }
-        ::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #777; }
-
-        /* Hide Sidebar on mobile initially, toggle via JS if needed, 
-           but for this single-file demo we use a responsive flex layout */
-        
-        .code-font { font-family: 'Fira Code', monospace; }
-        
-        iframe { border: none; background: white; width: 100%; height: 100%; }
-        
-        /* Loading Animation */
-        .loader {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3b82f6;
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(132, 204, 22, 0.15) 0%, transparent 70%);
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
+            pointer-events: none;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(132, 204, 22, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hero-grid-pattern {
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        
+        .float-1 { animation: float1 6s ease-in-out infinite; }
+        .float-2 { animation: float2 8s ease-in-out infinite; }
+        .float-3 { animation: float3 7s ease-in-out infinite; }
+        @keyframes float1 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(3deg); }
+        }
+        @keyframes float2 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(-2deg); }
+        }
+        @keyframes float3 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(2deg); }
+        }
+        
+        .hero-fade-up { animation: heroFadeUp 0.8s ease-out both; }
+        .hero-fade-up-2 { animation: heroFadeUp 0.8s ease-out 0.15s both; }
+        .hero-fade-up-3 { animation: heroFadeUp 0.8s ease-out 0.3s both; }
+        .hero-fade-up-4 { animation: heroFadeUp 0.8s ease-out 0.45s both; }
+        .hero-fade-up-5 { animation: heroFadeUp 0.8s ease-out 0.6s both; }
+        @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 40px rgba(132, 204, 22, 0.3), 0 0 80px rgba(132, 204, 22, 0.1);
+        }
+        .glow-border {
+            box-shadow: 0 0 20px rgba(132, 204, 22, 0.2), inset 0 0 20px rgba(132, 204, 22, 0.05);
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+        
+        .slide-in { animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse-badge { animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .toast {
+            animation: toastIn 0.4s ease-out, toastOut 0.4s ease-in 2.6s;
+        }
+        @keyframes toastIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #84cc16; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #65a30d; }
+        
+        .marquee { overflow: hidden; white-space: nowrap; }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* Admin login modal overlay */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+        }
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+
+        /* Stat counter animation */
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 min-h-screen">
 
-    <aside class="w-64 bg-gray-900 border-r border-gray-700 flex flex-col flex-shrink-0 hidden md:flex transition-all duration-300" id="sidebar">
-        <div class="p-4 border-b border-gray-700">
-            <button onclick="createNewProject()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded flex items-center justify-center gap-2 transition-colors">
-                <i class="fas fa-plus"></i> New Project
-            </button>
+    <!-- Top Bar -->
+    <div class="bg-gray-900 text-white py-2 marquee">
+        <div class="marquee-content">
+            <span class="mx-8 text-sm">🎉 Grand Opening Sale - Up to 50% OFF on selected items!</span>
+            <span class="mx-8 text-sm">🚚 Free Shipping on orders above $49</span>
+            <span class="mx-8 text-sm">💯 100% Original Products Guaranteed</span>
+            <span class="mx-8 text-sm">🔄 Easy 30-Day Returns</span>
+            <span class="mx-8 text-sm">🎉 Grand Opening Sale - Up to 50% OFF on selected items!</span>
+            <span class="mx-8 text-sm">🚚 Free Shipping on orders above $49</span>
+            <span class="mx-8 text-sm">💯 100% Original Products Guaranteed</span>
+            <span class="mx-8 text-sm">🔄 Easy 30-Day Returns</span>
         </div>
+    </div>
 
-        <div class="flex-1 overflow-y-auto p-2 space-y-1" id="projectList">
-            </div>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="#" onclick="showPage('home')" class="flex items-center gap-2 cursor-pointer">
+                    <div class="w-10 h-10 banner-gradient rounded-lg flex items-center justify-center">
+                        <span class="font-display font-black text-xl text-gray-900">M</span>
+                    </div>
+                    <div>
+                        <span class="font-display font-bold text-xl text-gray-900">MMART</span>
+                        <span class="block text-[10px] text-gray-500 -mt-1 leading-tight">Trust is must</span>
+                    </div>
+                </a>
 
-        <div class="p-4 border-t border-gray-700">
-            <button onclick="toggleSettings()" class="w-full text-gray-400 hover:text-white flex items-center gap-2 p-2 rounded hover:bg-gray-800 transition-colors">
-                <i class="fas fa-cog"></i> Settings
-            </button>
-        </div>
-    </aside>
-
-    <main class="flex-1 flex flex-col min-w-0 bg-gray-800 relative">
-        
-        <header class="h-14 bg-gray-900 border-b border-gray-700 flex items-center justify-between px-4 flex-shrink-0">
-            <div class="flex items-center gap-4">
-                <button class="md:hidden text-gray-400" onclick="document.getElementById('sidebar').classList.toggle('hidden')">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="flex gap-2 group">
-                    <div class="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 cursor-pointer"></div>
-                    <div class="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-600 cursor-pointer"></div>
-                    <div class="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600 cursor-pointer"></div>
-                </div>
-                <span id="projectName" class="text-sm text-gray-400 font-mono ml-2 hidden sm:block">Untitled Project</span>
-            </div>
-
-            <div class="flex bg-gray-800 rounded p-1 border border-gray-700">
-                <button onclick="switchView('preview')" id="btnPreview" class="px-3 py-1 text-sm rounded bg-gray-700 text-white shadow">Preview</button>
-                <button onclick="switchView('code')" id="btnCode" class="px-3 py-1 text-sm rounded text-gray-400 hover:text-white">Code</button>
-            </div>
-
-            <button onclick="downloadCode()" class="text-gray-400 hover:text-blue-400 transition-colors" title="Download HTML">
-                <i class="fas fa-download"></i>
-            </button>
-        </header>
-
-        <div class="flex-1 relative overflow-hidden bg-gray-100">
-            <div id="previewContainer" class="absolute inset-0 z-10 w-full h-full">
-                <iframe id="previewFrame" sandbox="allow-scripts allow-same-origin"></iframe>
-                <div id="emptyState" class="absolute inset-0 flex items-center justify-center text-gray-400 bg-gray-800 z-20">
-                    <div class="text-center">
-                        <i class="fas fa-magic text-4xl mb-3 opacity-50"></i>
-                        <p>Describe a website to build it.</p>
+                <!-- Search Bar -->
+                <div class="hidden md:flex flex-1 max-w-xl mx-8">
+                    <div class="relative w-full">
+                        <input type="text" id="searchInput" placeholder="Search products..." 
+                               class="w-full pl-10 pr-4 py-2 border-2 border-gray-200 rounded-full focus:border-brand-500 focus:outline-none transition-colors"
+                               oninput="filterProducts()">
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                     </div>
                 </div>
-            </div>
 
-            <div id="codeContainer" class="absolute inset-0 z-0 w-full h-full bg-[#1e1e1e] hidden overflow-auto">
-                <textarea id="codeEditor" class="w-full h-full bg-[#1e1e1e] text-[#d4d4d4] p-4 code-font text-sm outline-none resize-none" spellcheck="false" readonly></textarea>
-            </div>
-            
-            <div id="loaderOverlay" class="absolute inset-0 bg-black/50 z-50 hidden flex items-center justify-center flex-col gap-3">
-                <div class="loader"></div>
-                <span class="text-white text-sm font-medium animate-pulse">Generating Code...</span>
+                <!-- Nav Actions -->
+                <div class="flex items-center gap-4">
+                    <button onclick="showPage('home')" class="hidden sm:block text-gray-600 hover:text-brand-600 font-medium transition-colors">
+                        <i class="fas fa-home mr-1"></i> Home
+                    </button>
+                    <button onclick="handleAdminAccess()" class="hidden sm:block text-gray-600 hover:text-brand-600 font-medium transition-colors">
+                        <i class="fas fa-shield-halved mr-1"></i> Admin
+                    </button>
+                    <button onclick="toggleCart()" class="relative text-gray-700 hover:text-brand-600 transition-colors p-2">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cartCount" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold hidden pulse-badge">0</span>
+                    </button>
+                    <!-- Mobile menu -->
+                    <button onclick="toggleMobileMenu()" class="sm:hidden text-gray-700 p-2">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <footer class="p-4 bg-gray-900 border-t border-gray-700 flex-shrink-0">
-            <div class="relative max-w-4xl mx-auto w-full">
-                <textarea 
-                    id="promptInput" 
-                    placeholder="Describe your website (e.g., 'A landing page for a coffee shop with a hero section')..." 
-                    class="w-full bg-gray-800 text-white border border-gray-700 rounded-lg pl-4 pr-12 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none h-[60px]"
-                    onkeydown="handleEnter(event)"
-                ></textarea>
-                <button onclick="generateSite()" class="absolute right-3 top-3 text-blue-500 hover:text-blue-400 p-1">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden sm:hidden bg-white border-t border-gray-200 px-4 py-3 space-y-2">
+            <div class="relative mb-2">
+                <input type="text" placeholder="Search products..." 
+                       class="w-full pl-10 pr-4 py-2 border-2 border-gray-200 rounded-full focus:border-brand-500 focus:outline-none"
+                       oninput="this.value; document.getElementById('searchInput').value = this.value; filterProducts()">
+                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
             </div>
-        </footer>
-    </main>
+            <button onclick="showPage('home'); toggleMobileMenu()" class="block w-full text-left py-2 text-gray-600 hover:text-brand-600">
+                <i class="fas fa-home mr-2"></i> Home
+            </button>
+            <button onclick="handleAdminAccess(); toggleMobileMenu()" class="block w-full text-left py-2 text-gray-600 hover:text-brand-600">
+                <i class="fas fa-shield-halved mr-2"></i> Admin Panel
+            </button>
+        </div>
+    </nav>
 
-    <div id="settingsModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4">
-        <div class="bg-gray-800 rounded-lg shadow-xl w-full max-w-md border border-gray-700">
-            <div class="flex justify-between items-center p-4 border-b border-gray-700">
-                <h3 class="text-lg font-semibold text-white">Settings</h3>
-                <button onclick="toggleSettings()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="p-4 space-y-4">
-                <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">API Endpoint</label>
-                    <input type="text" id="settingUrl" value="[https://openrouter.ai/api/v1/chat/completions](https://openrouter.ai/api/v1/chat/completions)" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+    <!-- ==================== ADMIN LOGIN MODAL ==================== -->
+    <div id="adminLoginModal" class="fixed inset-0 z-[200] hidden">
+        <div class="modal-overlay absolute inset-0" onclick="closeAdminLogin()"></div>
+        <div class="relative flex items-center justify-center min-h-full p-4">
+            <div id="loginCard" class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 relative fade-in">
+                <button onclick="closeAdminLogin()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+                
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 banner-gradient rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-shield-halved text-2xl text-gray-900"></i>
+                    </div>
+                    <h2 class="font-display text-2xl font-bold text-gray-900">Admin Login</h2>
+                    <p class="text-gray-500 text-sm mt-1">Enter your credentials to access the admin panel</p>
                 </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">API Key</label>
-                    <input type="password" id="settingKey" placeholder="sk-or-..." class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+
+                <div id="loginError" class="hidden bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg px-4 py-3 mb-4">
+                    <i class="fas fa-exclamation-circle mr-2"></i><span id="loginErrorMsg">Invalid credentials</span>
                 </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-400 mb-1 uppercase">Model ID</label>
-                    <input type="text" id="settingModel" value="deepseek/deepseek-r1:free" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                        <div class="relative">
+                            <input type="text" id="adminUsername" placeholder="Enter username" 
+                                   class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-brand-500 focus:outline-none transition-colors"
+                                   onkeydown="if(event.key==='Enter') attemptLogin()">
+                            <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <div class="relative">
+                            <input type="password" id="adminPassword" placeholder="Enter password" 
+                                   class="w-full pl-10 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:border-brand-500 focus:outline-none transition-colors"
+                                   onkeydown="if(event.key==='Enter') attemptLogin()">
+                            <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <button type="button" onclick="togglePasswordVisibility('adminPassword', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button onclick="attemptLogin()" id="loginBtn" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition-all transform hover:scale-[1.02]">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </button>
                 </div>
-            </div>
-            <div class="p-4 border-t border-gray-700 flex justify-end">
-                <button onclick="saveSettings()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">Save Settings</button>
+
+                <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                    <p class="text-xs text-amber-700"><i class="fas fa-info-circle mr-1"></i> Default credentials: <strong>admin</strong> / <strong>admin123</strong>. Change them after first login.</p>
+                </div>
+
+                <div id="loginAttempts" class="hidden mt-3 text-center">
+                    <p class="text-xs text-red-500"><i class="fas fa-exclamation-triangle mr-1"></i>Too many failed attempts. Try again in <span id="lockoutTimer">30</span>s</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // --- CONSTANTS & CONFIG ---
-        const SYSTEM_PROMPT = "You are a web developer. Output ONLY raw HTML code with embedded CSS in <style> tags and embedded JS in <script> tags. Do not wrap code in Markdown backticks. Do not include explanations. Ensure the code is responsive and complete.";
+    <!-- Cart Sidebar -->
+    <div id="cartOverlay" class="fixed inset-0 bg-black/50 z-50 hidden" onclick="toggleCart()"></div>
+    <div id="cartSidebar" class="fixed top-0 right-0 w-full max-w-md h-full bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="flex items-center justify-between p-4 border-b bg-gray-50">
+            <h2 class="text-lg font-bold text-gray-900"><i class="fas fa-shopping-cart mr-2 text-brand-600"></i>Your Cart</h2>
+            <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+        </div>
+        <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-4">
+            <div id="emptyCart" class="text-center py-16 text-gray-400">
+                <i class="fas fa-cart-plus text-5xl mb-4"></i>
+                <p class="text-lg">Your cart is empty</p>
+                <p class="text-sm mt-1">Add some awesome products!</p>
+            </div>
+        </div>
+        <div id="cartFooter" class="hidden border-t bg-gray-50 p-4 space-y-3">
+            <div class="flex justify-between text-sm text-gray-600">
+                <span>Subtotal</span>
+                <span id="subtotal">$0.00</span>
+            </div>
+            <div class="flex justify-between text-sm text-gray-600">
+                <span>Shipping</span>
+                <span id="shippingCost">$0.00</span>
+            </div>
+            <div class="flex justify-between font-bold text-lg border-t pt-3">
+                <span>Total</span>
+                <span id="cartTotal" class="text-brand-700">$0.00</span>
+            </div>
+            <button onclick="showPage('checkout'); toggleCart();" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-lg transition-colors">
+                <i class="fas fa-lock mr-2"></i>Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== HOME PAGE ==================== -->
+    <div id="page-home">
         
-        // --- STATE MANAGEMENT ---
-        let state = {
-            projects: [],
-            currentProjectId: null,
-            settings: {
-                url: "[https://openrouter.ai/api/v1/chat/completions](https://openrouter.ai/api/v1/chat/completions)", // Forced Default
-                key: "",
-                model: "deepseek/deepseek-r1:free"
-            }
-        };
+        <!-- Hero Banner - Professional Dark Design -->
+        <section class="hero-section">
+            <div class="hero-grid-pattern relative z-10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 lg:py-32">
+                    <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+                        
+                        <!-- Left: Content -->
+                        <div class="flex-1 text-center lg:text-left max-w-2xl">
+                            <div class="hero-fade-up inline-flex items-center gap-2 bg-brand-500/10 border border-brand-500/20 text-brand-400 text-sm font-semibold px-4 py-2 rounded-full mb-6">
+                                <span class="w-2 h-2 bg-brand-400 rounded-full animate-pulse"></span>
+                                New Season Collection 2026
+                            </div>
+                            
+                            <h1 class="hero-fade-up-2 font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-6">
+                                Discover the<br>
+                                <span class="text-brand-400 glow-text">Best Deals</span><br>
+                                You Deserve
+                            </h1>
+                            
+                            <p class="hero-fade-up-3 text-gray-400 text-lg md:text-xl mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                                Premium quality products curated just for you. Unbeatable prices, trusted brands, and a shopping experience you will love.
+                            </p>
+                            
+                            <div class="hero-fade-up-4 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
+                                <a href="#products" class="bg-brand-500 hover:bg-brand-600 text-gray-900 font-extrabold py-4 px-10 rounded-full transition-all transform hover:scale-105 hover:shadow-[0_0_30px_rgba(132,204,22,0.3)] inline-flex items-center justify-center gap-2 text-lg">
+                                    <i class="fas fa-shopping-bag"></i> Shop Now
+                                </a>
+                                <a href="#categories" class="bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-white/20 font-bold py-4 px-10 rounded-full transition-all transform hover:scale-105 inline-flex items-center justify-center gap-2 text-lg backdrop-blur-sm">
+                                    <i class="fas fa-th-large"></i> Categories
+                                </a>
+                            </div>
 
-        // --- DOM ELEMENTS ---
-        const els = {
-            sidebar: document.getElementById('projectList'),
-            previewFrame: document.getElementById('previewFrame'),
-            codeEditor: document.getElementById('codeEditor'),
-            previewContainer: document.getElementById('previewContainer'),
-            codeContainer: document.getElementById('codeContainer'),
-            emptyState: document.getElementById('emptyState'),
-            loader: document.getElementById('loaderOverlay'),
-            prompt: document.getElementById('promptInput'),
-            projectName: document.getElementById('projectName'),
-            modal: document.getElementById('settingsModal'),
-            inputs: {
-                url: document.getElementById('settingUrl'),
-                key: document.getElementById('settingKey'),
-                model: document.getElementById('settingModel')
-            },
-            btns: {
-                preview: document.getElementById('btnPreview'),
-                code: document.getElementById('btnCode')
-            }
-        };
+                            <!-- Trust Stats -->
+                            <div class="hero-fade-up-5 flex flex-wrap items-center justify-center lg:justify-start gap-6 md:gap-8">
+                                <div class="text-center lg:text-left">
+                                    <div class="text-2xl md:text-3xl font-extrabold text-white">50K+</div>
+                                    <div class="text-xs text-gray-500 uppercase tracking-wider">Happy Customers</div>
+                                </div>
+                                <div class="w-px h-10 bg-gray-700 hidden sm:block"></div>
+                                <div class="text-center lg:text-left">
+                                    <div class="text-2xl md:text-3xl font-extrabold text-white">4.9<span class="text-brand-400 text-lg ml-1"><i class="fas fa-star"></i></span></div>
+                                    <div class="text-xs text-gray-500 uppercase tracking-wider">Average Rating</div>
+                                </div>
+                                <div class="w-px h-10 bg-gray-700 hidden sm:block"></div>
+                                <div class="text-center lg:text-left">
+                                    <div class="text-2xl md:text-3xl font-extrabold text-white">100%</div>
+                                    <div class="text-xs text-gray-500 uppercase tracking-wider">Genuine Products</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right: Floating Product Cards -->
+                        <div class="flex-1 hidden lg:block relative" style="min-height: 480px;">
+                            <!-- Main product card -->
+                            <div class="float-1 absolute top-4 left-8 w-56 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-3 shadow-2xl glow-border">
+                                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop" alt="Headphones" class="w-full h-40 object-cover rounded-xl mb-3">
+                                <p class="text-white font-semibold text-sm truncate">Wireless Headphones</p>
+                                <div class="flex items-center justify-between mt-1">
+                                    <span class="text-brand-400 font-bold">$79.99</span>
+                                    <span class="text-gray-500 text-xs line-through">$149.99</span>
+                                </div>
+                                <div class="flex items-center gap-1 mt-1">
+                                    <i class="fas fa-star text-yellow-400 text-[10px]"></i>
+                                    <i class="fas fa-star text-yellow-400 text-[10px]"></i>
+                                    <i class="fas fa-star text-yellow-400 text-[10px]"></i>
+                                    <i class="fas fa-star text-yellow-400 text-[10px]"></i>
+                                    <i class="fas fa-star text-yellow-400 text-[10px]"></i>
+                                    <span class="text-gray-500 text-[10px] ml-1">(2.3k)</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Secondary product card -->
+                            <div class="float-2 absolute top-16 right-0 w-48 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-3 shadow-2xl">
+                                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop" alt="Watch" class="w-full h-32 object-cover rounded-xl mb-3">
+                                <p class="text-white font-semibold text-sm truncate">Smart Watch Pro</p>
+                                <span class="text-brand-400 font-bold text-sm">$129.99</span>
+                            </div>
+                            
+                            <!-- Third product card -->
+                            <div class="float-3 absolute bottom-8 left-16 w-52 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-3 shadow-2xl">
+                                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop" alt="Shoes" class="w-full h-36 object-cover rounded-xl mb-3">
+                                <p class="text-white font-semibold text-sm truncate">Ultra Boost Shoes</p>
+                                <div class="flex items-center justify-between mt-1">
+                                    <span class="text-brand-400 font-bold">$89.99</span>
+                                    <span class="bg-red-500/20 text-red-400 text-[10px] font-bold px-2 py-0.5 rounded-full">-36%</span>
+                                </div>
+                            </div>
 
-        // --- INITIALIZATION ---
-        window.addEventListener('DOMContentLoaded', () => {
-            loadState();
-            renderSidebar();
+                            <!-- Floating badge -->
+                            <div class="float-2 absolute bottom-4 right-4 bg-brand-500 text-gray-900 font-extrabold text-sm px-4 py-2 rounded-full shadow-lg shadow-brand-500/30">
+                                <i class="fas fa-fire mr-1"></i> Trending Now
+                            </div>
+
+                            <!-- Decorative circle -->
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 border border-brand-500/10 rounded-full"></div>
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 border border-brand-500/5 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            // Load most recent project or create one
-            if (state.projects.length > 0) {
-                loadProject(state.projects[0].id);
+            <!-- Wave separator -->
+            <div class="absolute bottom-0 left-0 right-0 z-20">
+                <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-12 md:h-16">
+                    <path d="M0 80L48 72C96 64 192 48 288 40C384 32 480 32 576 36C672 40 768 48 864 52C960 56 1056 56 1152 48C1248 40 1344 24 1392 16L1440 8V80H0Z" fill="#f9fafb"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Features Bar -->
+        <section class="bg-gray-50 py-10">
+            <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="flex items-center gap-4 bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 bg-brand-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-truck-fast text-brand-600 text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-sm text-gray-900 block">Free Shipping</span>
+                        <span class="text-xs text-gray-500">On orders over $49</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-shield-halved text-blue-600 text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-sm text-gray-900 block">Secure Payment</span>
+                        <span class="text-xs text-gray-500">100% protected</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-rotate-left text-amber-600 text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-sm text-gray-900 block">Easy Returns</span>
+                        <span class="text-xs text-gray-500">30 day policy</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-headset text-purple-600 text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-sm text-gray-900 block">24/7 Support</span>
+                        <span class="text-xs text-gray-500">Dedicated help</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories -->
+        <section id="categories" class="py-12 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4">
+                <h2 class="font-display text-3xl font-bold text-gray-900 text-center mb-2">Shop by Category</h2>
+                <p class="text-gray-500 text-center mb-8">Find exactly what you're looking for</p>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4" id="categoriesGrid">
+                </div>
+            </div>
+        </section>
+
+        <!-- Products -->
+        <section id="products" class="py-12 bg-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+                    <div>
+                        <h2 class="font-display text-3xl font-bold text-gray-900">Our Products</h2>
+                        <p class="text-gray-500">Handpicked selections for you</p>
+                    </div>
+                    <div class="flex gap-2 flex-wrap">
+                        <button onclick="filterByCategory('all')" class="cat-filter px-4 py-2 rounded-full text-sm font-medium bg-brand-500 text-white transition-colors" data-cat="all">All</button>
+                    </div>
+                </div>
+                <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                </div>
+                <div id="noProducts" class="hidden text-center py-16 text-gray-400">
+                    <i class="fas fa-box-open text-5xl mb-4"></i>
+                    <p class="text-lg">No products found</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Promo Banner -->
+        <section class="py-16 bg-gray-900 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-0 left-0 w-96 h-96 bg-brand-500 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+                <div class="absolute bottom-0 right-0 w-96 h-96 bg-brand-500 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+            </div>
+            <div class="max-w-7xl mx-auto px-4 relative z-10">
+                <div class="bg-gradient-to-r from-brand-500/10 to-brand-600/10 border border-brand-500/20 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div>
+                        <div class="inline-flex items-center gap-2 bg-brand-500/20 text-brand-400 text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
+                            <i class="fas fa-fire"></i> Limited Time Offer
+                        </div>
+                        <h3 class="font-display text-3xl md:text-4xl font-bold text-white mb-3">Get 20% Off Your First Order</h3>
+                        <p class="text-gray-400 text-lg">Use code <span class="font-bold bg-brand-500 text-gray-900 px-3 py-1 rounded-lg mx-1 inline-block">MMART20</span> at checkout and save big on your first purchase.</p>
+                    </div>
+                    <a href="#products" class="bg-brand-500 hover:bg-brand-400 text-gray-900 font-extrabold py-4 px-10 rounded-full whitespace-nowrap transition-all transform hover:scale-105 hover:shadow-[0_0_30px_rgba(132,204,22,0.3)] text-lg flex-shrink-0">
+                        Grab the Deal <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="py-16 bg-gradient-to-b from-gray-50 to-white">
+            <div class="max-w-2xl mx-auto px-4 text-center">
+                <div class="w-16 h-16 bg-brand-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-envelope-open-text text-brand-600 text-2xl"></i>
+                </div>
+                <h3 class="font-display text-3xl font-bold text-gray-900 mb-3">Stay in the Loop</h3>
+                <p class="text-gray-500 mb-8 text-lg">Get exclusive deals, new arrivals, and special offers delivered straight to your inbox.</p>
+                <div class="flex gap-3 max-w-lg mx-auto">
+                    <input type="email" placeholder="Enter your email address" class="flex-1 px-5 py-4 border-2 border-gray-200 rounded-xl focus:border-brand-500 focus:outline-none transition-colors text-gray-700">
+                    <button onclick="showToast('Subscribed successfully!')" class="bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 px-8 rounded-xl transition-all hover:shadow-lg hover:shadow-brand-500/20 whitespace-nowrap">
+                        <i class="fas fa-paper-plane mr-2"></i>Subscribe
+                    </button>
+                </div>
+                <p class="text-xs text-gray-400 mt-4"><i class="fas fa-lock mr-1"></i> We respect your privacy. Unsubscribe anytime.</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ==================== ADMIN PAGE ==================== -->
+    <div id="page-admin" class="hidden">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+                <div>
+                    <h1 class="font-display text-3xl font-bold text-gray-900"><i class="fas fa-shield-halved text-brand-600 mr-2"></i>Admin Panel</h1>
+                    <p class="text-gray-500">Manage your products and store</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div id="adminUserBadge" class="hidden sm:flex items-center gap-2 bg-brand-50 border border-brand-200 rounded-lg px-3 py-2">
+                        <div class="w-8 h-8 bg-brand-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-white text-sm"></i>
+                        </div>
+                        <div>
+                            <span id="adminUserName" class="text-sm font-semibold text-gray-900">Admin</span>
+                            <span class="block text-[10px] text-brand-700">Authenticated</span>
+                        </div>
+                    </div>
+                    <button onclick="toggleAddProduct()" id="addProductBtn" class="bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                        <i class="fas fa-plus mr-2"></i>Add Product
+                    </button>
+                    <button onclick="showChangePasswordModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 px-4 rounded-lg transition-colors" title="Change Password">
+                        <i class="fas fa-key"></i>
+                    </button>
+                    <button onclick="adminLogout()" class="bg-red-100 hover:bg-red-200 text-red-700 font-bold py-3 px-4 rounded-lg transition-colors" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Add Product Form -->
+            <div id="addProductForm" class="hidden mb-8 bg-white rounded-xl shadow-lg p-6 border fade-in">
+                <h3 class="text-xl font-bold text-gray-900 mb-4"><i class="fas fa-box mr-2 text-brand-600"></i>Add New Product</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
+                        <input type="text" id="prodName" placeholder="e.g. Premium Headphones" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Price ($) *</label>
+                        <input type="number" id="prodPrice" placeholder="e.g. 49.99" step="0.01" min="0" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+                        <select id="prodCategory" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none">
+                            <option value="">Select category</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Fashion">Fashion</option>
+                            <option value="Home">Home & Living</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Books">Books</option>
+                            <option value="Beauty">Beauty</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                        <input type="text" id="prodImage" placeholder="https://... (leave blank for default)" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea id="prodDesc" rows="3" placeholder="Short product description..." class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none resize-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Original Price ($)</label>
+                        <input type="number" id="prodOrigPrice" placeholder="e.g. 79.99 (for showing discount)" step="0.01" min="0" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Rating (1-5)</label>
+                        <input type="number" id="prodRating" placeholder="e.g. 4.5" step="0.1" min="1" max="5" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none">
+                    </div>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button onclick="addProduct()" class="bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                        <i class="fas fa-check mr-2"></i>Save Product
+                    </button>
+                    <button onclick="toggleAddProduct()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-6 rounded-lg transition-colors">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                <div class="bg-white rounded-xl shadow p-5 border">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-box text-blue-600 text-lg"></i>
+                        </div>
+                        <div>
+                            <div id="statProducts" class="text-2xl font-bold text-gray-900">0</div>
+                            <div class="text-sm text-gray-500">Total Products</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow p-5 border">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-tags text-green-600 text-lg"></i>
+                        </div>
+                        <div>
+                            <div id="statCategories" class="text-2xl font-bold text-gray-900">0</div>
+                            <div class="text-sm text-gray-500">Categories</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow p-5 border">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-dollar-sign text-purple-600 text-lg"></i>
+                        </div>
+                        <div>
+                            <div id="statAvgPrice" class="text-2xl font-bold text-gray-900">$0</div>
+                            <div class="text-sm text-gray-500">Avg. Price</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Table -->
+            <div class="bg-white rounded-xl shadow-lg border overflow-hidden">
+                <div class="p-4 border-b bg-gray-50">
+                    <h3 class="font-bold text-gray-900">Product Inventory</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b text-sm text-gray-600">
+                            <tr>
+                                <th class="py-3 px-4">Product</th>
+                                <th class="py-3 px-4">Category</th>
+                                <th class="py-3 px-4">Price</th>
+                                <th class="py-3 px-4">Rating</th>
+                                <th class="py-3 px-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminProductList" class="divide-y">
+                        </tbody>
+                    </table>
+                </div>
+                <div id="adminNoProducts" class="hidden text-center py-12 text-gray-400">
+                    <i class="fas fa-inbox text-4xl mb-3"></i>
+                    <p>No products yet. Click "Add Product" to get started!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== CHANGE PASSWORD MODAL ==================== -->
+    <div id="changePasswordModal" class="fixed inset-0 z-[200] hidden">
+        <div class="modal-overlay absolute inset-0" onclick="closeChangePasswordModal()"></div>
+        <div class="relative flex items-center justify-center min-h-full p-4">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 relative fade-in">
+                <button onclick="closeChangePasswordModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+                
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-key text-2xl text-amber-600"></i>
+                    </div>
+                    <h2 class="font-display text-2xl font-bold text-gray-900">Change Password</h2>
+                    <p class="text-gray-500 text-sm mt-1">Update your admin credentials</p>
+                </div>
+
+                <div id="changePwError" class="hidden bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg px-4 py-3 mb-4">
+                    <i class="fas fa-exclamation-circle mr-2"></i><span id="changePwErrorMsg"></span>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+                        <input type="password" id="currentPw" placeholder="Enter current password"
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-brand-500 focus:outline-none transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">New Username (optional)</label>
+                        <input type="text" id="newUsername" placeholder="Leave blank to keep current"
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-brand-500 focus:outline-none transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                        <input type="password" id="newPw" placeholder="Enter new password (min 6 chars)"
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-brand-500 focus:outline-none transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+                        <input type="password" id="confirmPw" placeholder="Re-enter new password"
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-brand-500 focus:outline-none transition-colors"
+                               onkeydown="if(event.key==='Enter') changePassword()">
+                    </div>
+                    <button onclick="changePassword()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl transition-all">
+                        <i class="fas fa-save mr-2"></i>Update Credentials
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== CHECKOUT PAGE ==================== -->
+    <div id="page-checkout" class="hidden">
+        <div class="max-w-4xl mx-auto px-4 py-8">
+            <h1 class="font-display text-3xl font-bold text-gray-900 mb-8"><i class="fas fa-lock text-brand-600 mr-2"></i>Secure Checkout</h1>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <!-- Payment Form -->
+                <div class="lg:col-span-3 space-y-6">
+                    <!-- Shipping -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 border">
+                        <h3 class="font-bold text-lg text-gray-900 mb-4"><i class="fas fa-truck mr-2 text-brand-600"></i>Shipping Information</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                                <input type="text" id="shipFirst" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none" placeholder="John">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                                <input type="text" id="shipLast" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none" placeholder="Doe">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                                <input type="email" id="shipEmail" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none" placeholder="john@example.com">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Address *</label>
+                                <input type="text" id="shipAddress" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none" placeholder="123 Main Street">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">City *</label>
+                                <input type="text" id="shipCity" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none" placeholder="New York">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">ZIP Code *</label>
+                                <input type="text" id="shipZip" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none" placeholder="10001">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                                <input type="tel" id="shipPhone" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none" placeholder="+1 234 567 8900">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 border">
+                        <h3 class="font-bold text-lg text-gray-900 mb-4"><i class="fas fa-credit-card mr-2 text-brand-600"></i>Payment Details</h3>
+                        <div class="flex gap-3 mb-4">
+                            <div class="border-2 border-brand-500 bg-brand-50 rounded-lg px-4 py-2 flex items-center gap-2 cursor-pointer">
+                                <i class="fab fa-cc-visa text-2xl text-blue-700"></i>
+                                <i class="fab fa-cc-mastercard text-2xl text-red-500"></i>
+                                <span class="text-sm font-medium">Card</span>
+                            </div>
+                            <div class="border-2 border-gray-200 rounded-lg px-4 py-2 flex items-center gap-2 cursor-pointer hover:border-brand-400 transition-colors">
+                                <i class="fab fa-paypal text-2xl text-blue-600"></i>
+                                <span class="text-sm font-medium">PayPal</span>
+                            </div>
+                            <div class="border-2 border-gray-200 rounded-lg px-4 py-2 flex items-center gap-2 cursor-pointer hover:border-brand-400 transition-colors">
+                                <i class="fab fa-apple-pay text-2xl"></i>
+                                <span class="text-sm font-medium">Apple Pay</span>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Card Number *</label>
+                                <div class="relative">
+                                    <input type="text" id="cardNumber" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNumber(this)">
+                                    <i class="fas fa-lock absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Cardholder Name *</label>
+                                <input type="text" id="cardName" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none" placeholder="JOHN DOE">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Expiry Date *</label>
+                                    <input type="text" id="cardExpiry" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">CVV *</label>
+                                    <div class="relative">
+                                        <input type="password" id="cardCVV" class="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-500 focus:outline-none" placeholder="***" maxlength="4">
+                                        <i class="fas fa-question-circle absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-help" title="3 or 4 digit security code on back of card"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="processPayment()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 rounded-xl text-lg transition-all transform hover:scale-[1.02] shadow-lg">
+                        <i class="fas fa-lock mr-2"></i>Pay Now <span id="payAmount">$0.00</span>
+                    </button>
+                    <p class="text-center text-sm text-gray-400 flex items-center justify-center gap-2">
+                        <i class="fas fa-shield-halved text-brand-500"></i> Your payment is encrypted and secure
+                    </p>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-lg p-6 border sticky top-20">
+                        <h3 class="font-bold text-lg text-gray-900 mb-4">Order Summary</h3>
+                        <div id="checkoutItems" class="space-y-3 mb-4 max-h-64 overflow-y-auto">
+                        </div>
+                        <div class="border-t pt-4 space-y-2 text-sm">
+                            <div class="flex justify-between text-gray-600">
+                                <span>Subtotal</span>
+                                <span id="checkSubtotal">$0.00</span>
+                            </div>
+                            <div class="flex justify-between text-gray-600">
+                                <span>Shipping</span>
+                                <span id="checkShipping">$0.00</span>
+                            </div>
+                            <div class="flex justify-between text-gray-600">
+                                <span>Tax (8%)</span>
+                                <span id="checkTax">$0.00</span>
+                            </div>
+                            <div class="flex justify-between font-bold text-lg pt-2 border-t">
+                                <span>Total</span>
+                                <span id="checkTotal" class="text-brand-700">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== ORDER SUCCESS PAGE ==================== -->
+    <div id="page-success" class="hidden">
+        <div class="max-w-lg mx-auto px-4 py-16 text-center fade-in">
+            <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-check text-green-600 text-4xl"></i>
+            </div>
+            <h1 class="font-display text-3xl font-bold text-gray-900 mb-2">Order Placed!</h1>
+            <p class="text-gray-500 text-lg mb-2">Thank you for shopping with MMART</p>
+            <p class="text-gray-400 mb-6">Order #<span id="orderNumber" class="font-mono font-bold text-gray-600"></span></p>
+            <div class="bg-gray-50 rounded-xl p-6 mb-8 text-left border">
+                <h3 class="font-bold text-gray-900 mb-3">Order Details</h3>
+                <div id="successDetails" class="text-sm text-gray-600 space-y-1"></div>
+            </div>
+            <button onclick="showPage('home')" class="bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 px-8 rounded-full transition-colors">
+                <i class="fas fa-shopping-bag mr-2"></i>Continue Shopping
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-10 h-10 banner-gradient rounded-lg flex items-center justify-center">
+                            <span class="font-display font-black text-xl text-gray-900">M</span>
+                        </div>
+                        <div>
+                            <span class="font-display font-bold text-xl text-white">MMART</span>
+                            <span class="block text-[10px] text-gray-500 -mt-1">Trust is must | est. 2026</span>
+                        </div>
+                    </div>
+                    <p class="text-sm">Your trusted online marketplace for premium products at the best prices. Quality and customer satisfaction guaranteed.</p>
+                    <div class="flex gap-3 mt-4">
+                        <span class="text-xs bg-gray-800 px-2 py-1 rounded">GD</span>
+                        <span class="text-xs bg-gray-800 px-2 py-1 rounded">GD</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" onclick="showPage('home')" class="hover:text-brand-400 transition-colors">Home</a></li>
+                        <li><a href="#products" class="hover:text-brand-400 transition-colors">Products</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Customer Service</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">FAQ</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Shipping Info</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Return Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Connect with Us</h4>
+                    <div class="flex gap-3 mb-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-brand-600 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-brand-600 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-brand-600 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-brand-600 rounded-full flex items-center justify-center transition-colors"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <p class="text-sm"><i class="fas fa-envelope mr-2"></i>support@mmart.com</p>
+                    <p class="text-sm mt-1"><i class="fas fa-phone mr-2"></i>+1 (800) MMART-00</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-sm">&copy; 2026 MMART. All rights reserved. | GD</p>
+                <div class="flex items-center gap-4">
+                    <i class="fab fa-cc-visa text-2xl"></i>
+                    <i class="fab fa-cc-mastercard text-2xl"></i>
+                    <i class="fab fa-cc-amex text-2xl"></i>
+                    <i class="fab fa-cc-paypal text-2xl"></i>
+                    <i class="fab fa-cc-apple-pay text-2xl"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed bottom-4 right-4 z-[100] space-y-2"></div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+    // ========== DATA ==========
+    const DEFAULT_PRODUCTS = [
+        {
+            id: 1, name: 'Wireless Noise-Cancelling Headphones', price: 79.99, originalPrice: 149.99,
+            category: 'Electronics', rating: 4.8, reviews: 2341,
+            description: 'Premium over-ear headphones with active noise cancellation, 40hr battery life, and crystal-clear sound.',
+            image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop'
+        },
+        {
+            id: 2, name: 'Smart Fitness Watch Pro', price: 129.99, originalPrice: 199.99,
+            category: 'Electronics', rating: 4.6, reviews: 1856,
+            description: 'Track your health with GPS, heart rate monitor, SpO2, and 14-day battery life.',
+            image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop'
+        },
+        {
+            id: 3, name: 'Classic Leather Messenger Bag', price: 59.99, originalPrice: 89.99,
+            category: 'Fashion', rating: 4.5, reviews: 987,
+            description: 'Handcrafted genuine leather bag with multiple compartments. Perfect for work or travel.',
+            image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop'
+        },
+        {
+            id: 4, name: 'Running Shoes Ultra Boost', price: 89.99, originalPrice: 139.99,
+            category: 'Sports', rating: 4.7, reviews: 3201,
+            description: 'Lightweight and responsive running shoes with cloud-like cushioning for maximum comfort.',
+            image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop'
+        },
+        {
+            id: 5, name: 'Organic Skincare Gift Set', price: 39.99, originalPrice: 59.99,
+            category: 'Beauty', rating: 4.4, reviews: 1543,
+            description: 'Complete skincare routine with cleanser, toner, moisturizer, and serum. 100% organic ingredients.',
+            image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop'
+        },
+        {
+            id: 6, name: 'Minimalist Desk Lamp', price: 34.99, originalPrice: 49.99,
+            category: 'Home', rating: 4.3, reviews: 678,
+            description: 'Modern LED desk lamp with adjustable brightness, color temperature, and USB charging port.',
+            image: 'https://images.unsplash.com/photo-1507473885765-e6ed057ab6fe?w=400&h=400&fit=crop'
+        },
+        {
+            id: 7, name: 'Bestseller Novel Collection', price: 24.99, originalPrice: 44.99,
+            category: 'Books', rating: 4.9, reviews: 4521,
+            description: 'Set of 5 award-winning novels from top contemporary authors. A must-read collection.',
+            image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=400&fit=crop'
+        },
+        {
+            id: 8, name: 'Portable Bluetooth Speaker', price: 44.99, originalPrice: 69.99,
+            category: 'Electronics', rating: 4.5, reviews: 2100,
+            description: 'Waterproof speaker with 360-degree sound, 20hr battery, and deep bass technology.',
+            image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop'
+        },
+        {
+            id: 9, name: 'Yoga Mat Premium', price: 29.99, originalPrice: 45.99,
+            category: 'Sports', rating: 4.6, reviews: 890,
+            description: 'Extra thick, non-slip yoga mat with alignment lines. Eco-friendly TPE material.',
+            image: 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=400&h=400&fit=crop'
+        },
+        {
+            id: 10, name: 'Scented Candle Set', price: 19.99, originalPrice: 34.99,
+            category: 'Home', rating: 4.7, reviews: 1234,
+            description: 'Set of 6 natural soy candles with calming scents. Hand-poured with cotton wicks.',
+            image: 'https://images.unsplash.com/photo-1602028915047-37269d1a73f7?w=400&h=400&fit=crop'
+        },
+        {
+            id: 11, name: 'Polarized Aviator Sunglasses', price: 49.99, originalPrice: 79.99,
+            category: 'Fashion', rating: 4.4, reviews: 1567,
+            description: 'UV400 protection with anti-glare polarized lenses. Lightweight metal frame.',
+            image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=400&fit=crop'
+        },
+        {
+            id: 12, name: 'Professional Makeup Brush Set', price: 27.99, originalPrice: 42.99,
+            category: 'Beauty', rating: 4.5, reviews: 2089,
+            description: '15-piece set with synthetic bristles, rose gold handles, and leather travel case.',
+            image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=400&fit=crop'
+        }
+    ];
+
+    const CATEGORIES = [
+        { name: 'Electronics', icon: 'fa-microchip', color: 'bg-blue-100 text-blue-700' },
+        { name: 'Fashion', icon: 'fa-shirt', color: 'bg-pink-100 text-pink-700' },
+        { name: 'Home', icon: 'fa-house', color: 'bg-amber-100 text-amber-700' },
+        { name: 'Sports', icon: 'fa-dumbbell', color: 'bg-green-100 text-green-700' },
+        { name: 'Books', icon: 'fa-book', color: 'bg-purple-100 text-purple-700' },
+        { name: 'Beauty', icon: 'fa-spa', color: 'bg-rose-100 text-rose-700' }
+    ];
+
+    // ========== ADMIN AUTH ==========
+    // Default credentials
+    const DEFAULT_ADMIN_USER = 'admin';
+    const DEFAULT_ADMIN_PASS = 'admin123';
+
+    // Auth state
+    let adminAuthenticated = false;
+    let failedAttempts = 0;
+    let lockoutUntil = 0;
+    const MAX_ATTEMPTS = 5;
+    const LOCKOUT_DURATION = 30000; // 30 seconds
+
+    // Simple hash function that works in ALL contexts (file://, http, https)
+    // This is a UI-level admin gate; not cryptographic security
+    function hashPassword(password) {
+        let h1 = 0xdeadbeef;
+        let h2 = 0x41c6ce57;
+        const str = password + '_mmart_2026';
+        for (let i = 0; i < str.length; i++) {
+            const ch = str.charCodeAt(i);
+            h1 = Math.imul(h1 ^ ch, 2654435761);
+            h2 = Math.imul(h2 ^ ch, 1597334677);
+        }
+        h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+        h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+        h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+        h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+        return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+    }
+
+    // Compute default hash at load time so it always matches the hash method
+    const DEFAULT_ADMIN_HASH = hashPassword(DEFAULT_ADMIN_PASS);
+
+    function getAdminCredentials() {
+        const stored = localStorage.getItem('mmart_admin_creds');
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                // Migration: if stored hash looks like old SHA-256 (64 hex chars), clear it
+                if (parsed.passwordHash && parsed.passwordHash.length === 64 && /^[0-9a-f]+$/.test(parsed.passwordHash)) {
+                    localStorage.removeItem('mmart_admin_creds');
+                    return { username: DEFAULT_ADMIN_USER, passwordHash: DEFAULT_ADMIN_HASH };
+                }
+                return parsed;
+            } catch(e) { /* fall through */ }
+        }
+        return { username: DEFAULT_ADMIN_USER, passwordHash: DEFAULT_ADMIN_HASH };
+    }
+
+    function setAdminCredentials(username, passwordHash) {
+        localStorage.setItem('mmart_admin_creds', JSON.stringify({ username, passwordHash }));
+    }
+
+    function isAdminAuthenticated() {
+        // Check sessionStorage for current session
+        return sessionStorage.getItem('mmart_admin_auth') === 'true';
+    }
+
+    function setAdminSession(username) {
+        sessionStorage.setItem('mmart_admin_auth', 'true');
+        sessionStorage.setItem('mmart_admin_user', username);
+        adminAuthenticated = true;
+    }
+
+    function clearAdminSession() {
+        sessionStorage.removeItem('mmart_admin_auth');
+        sessionStorage.removeItem('mmart_admin_user');
+        adminAuthenticated = false;
+    }
+
+    // Handle admin access - show login or go to panel
+    function handleAdminAccess() {
+        if (isAdminAuthenticated()) {
+            showPage('admin');
+        } else {
+            showAdminLogin();
+        }
+    }
+
+    function showAdminLogin() {
+        const modal = document.getElementById('adminLoginModal');
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        document.getElementById('adminUsername').value = '';
+        document.getElementById('adminPassword').value = '';
+        document.getElementById('loginError').classList.add('hidden');
+        setTimeout(() => document.getElementById('adminUsername').focus(), 100);
+    }
+
+    function closeAdminLogin() {
+        const modal = document.getElementById('adminLoginModal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    function attemptLogin() {
+        // Check lockout
+        if (Date.now() < lockoutUntil) {
+            const remaining = Math.ceil((lockoutUntil - Date.now()) / 1000);
+            showLoginError('Account locked. Try again in ' + remaining + 's');
+            return;
+        }
+
+        const username = document.getElementById('adminUsername').value.trim();
+        const password = document.getElementById('adminPassword').value;
+
+        if (!username || !password) {
+            showLoginError('Please enter both username and password');
+            return;
+        }
+
+        // Show loading state
+        const btn = document.getElementById('loginBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Verifying...';
+
+        const creds = getAdminCredentials();
+        const inputHash = hashPassword(password);
+
+        // Small delay for UX feedback
+        setTimeout(function() {
+            if (username === creds.username && inputHash === creds.passwordHash) {
+                // Success
+                failedAttempts = 0;
+                setAdminSession(username);
+                closeAdminLogin();
+                showPage('admin');
+                showToast('Welcome back, ' + username + '!');
+                updateAdminUserBadge();
             } else {
-                createNewProject();
+                // Failure
+                failedAttempts++;
+                
+                if (failedAttempts >= MAX_ATTEMPTS) {
+                    lockoutUntil = Date.now() + LOCKOUT_DURATION;
+                    showLoginError('Too many failed attempts. Locked for 30 seconds.');
+                    startLockoutTimer();
+                } else {
+                    const remaining = MAX_ATTEMPTS - failedAttempts;
+                    showLoginError('Invalid username or password. ' + remaining + ' attempt' + (remaining !== 1 ? 's' : '') + ' remaining.');
+                    // Shake animation
+                    document.getElementById('loginCard').classList.add('shake');
+                    setTimeout(function() { document.getElementById('loginCard').classList.remove('shake'); }, 400);
+                }
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i>Login';
+        }, 500);
+    }
+
+    function showLoginError(msg) {
+        const errorEl = document.getElementById('loginError');
+        document.getElementById('loginErrorMsg').textContent = msg;
+        errorEl.classList.remove('hidden');
+    }
+
+    function startLockoutTimer() {
+        const timerEl = document.getElementById('lockoutTimer');
+        const attemptsEl = document.getElementById('loginAttempts');
+        attemptsEl.classList.remove('hidden');
+        
+        const interval = setInterval(() => {
+            const remaining = Math.ceil((lockoutUntil - Date.now()) / 1000);
+            if (remaining <= 0) {
+                clearInterval(interval);
+                attemptsEl.classList.add('hidden');
+                failedAttempts = 0;
+                document.getElementById('loginError').classList.add('hidden');
+            } else {
+                timerEl.textContent = remaining;
+            }
+        }, 1000);
+    }
+
+    function adminLogout() {
+        clearAdminSession();
+        showPage('home');
+        showToast('Logged out of admin panel');
+    }
+
+    function updateAdminUserBadge() {
+        const username = sessionStorage.getItem('mmart_admin_user') || 'Admin';
+        document.getElementById('adminUserName').textContent = username;
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon = btn.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+        } else {
+            input.type = 'password';
+            icon.className = 'fas fa-eye';
+        }
+    }
+
+    // ========== CHANGE PASSWORD ==========
+    function showChangePasswordModal() {
+        if (!isAdminAuthenticated()) return;
+        document.getElementById('changePasswordModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        document.getElementById('currentPw').value = '';
+        document.getElementById('newUsername').value = '';
+        document.getElementById('newPw').value = '';
+        document.getElementById('confirmPw').value = '';
+        document.getElementById('changePwError').classList.add('hidden');
+    }
+
+    function closeChangePasswordModal() {
+        document.getElementById('changePasswordModal').classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    function changePassword() {
+        const currentPw = document.getElementById('currentPw').value;
+        const newUsername = document.getElementById('newUsername').value.trim();
+        const newPw = document.getElementById('newPw').value;
+        const confirmPw = document.getElementById('confirmPw').value;
+
+        if (!currentPw) {
+            showChangePwError('Please enter your current password');
+            return;
+        }
+
+        // Verify current password
+        const creds = getAdminCredentials();
+        const currentHash = hashPassword(currentPw);
+        if (currentHash !== creds.passwordHash) {
+            showChangePwError('Current password is incorrect');
+            return;
+        }
+
+        if (!newPw && !newUsername) {
+            showChangePwError('Enter a new username or password to update');
+            return;
+        }
+
+        if (newPw) {
+            if (newPw.length < 6) {
+                showChangePwError('New password must be at least 6 characters');
+                return;
+            }
+            if (newPw !== confirmPw) {
+                showChangePwError('New passwords do not match');
+                return;
+            }
+        }
+
+        const updatedUsername = newUsername || creds.username;
+        const updatedHash = newPw ? hashPassword(newPw) : creds.passwordHash;
+
+        setAdminCredentials(updatedUsername, updatedHash);
+        setAdminSession(updatedUsername);
+        updateAdminUserBadge();
+        closeChangePasswordModal();
+        showToast('Credentials updated successfully!');
+    }
+
+    function showChangePwError(msg) {
+        const errorEl = document.getElementById('changePwError');
+        document.getElementById('changePwErrorMsg').textContent = msg;
+        errorEl.classList.remove('hidden');
+    }
+
+    // ========== STATE ==========
+    let products = JSON.parse(localStorage.getItem('mmart_products')) || [...DEFAULT_PRODUCTS];
+    let cart = JSON.parse(localStorage.getItem('mmart_cart')) || [];
+    let currentCategory = 'all';
+    let nextId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+
+    // ========== INIT ==========
+    function init() {
+        // Restore session state
+        adminAuthenticated = isAdminAuthenticated();
+        
+        renderCategories();
+        renderProducts();
+        renderCategoryFilters();
+        updateCartUI();
+        updateAdminStats();
+        renderAdminProducts();
+        
+        if (adminAuthenticated) {
+            updateAdminUserBadge();
+        }
+    }
+
+    // ========== PAGES ==========
+    function showPage(page) {
+        // Guard admin page behind authentication
+        if (page === 'admin' && !isAdminAuthenticated()) {
+            showAdminLogin();
+            return;
+        }
+
+        document.querySelectorAll('[id^="page-"]').forEach(p => p.classList.add('hidden'));
+        document.getElementById('page-' + page).classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        if (page === 'checkout') renderCheckout();
+        if (page === 'admin') { updateAdminStats(); renderAdminProducts(); updateAdminUserBadge(); }
+    }
+
+    // ========== CATEGORIES ==========
+    function renderCategories() {
+        const grid = document.getElementById('categoriesGrid');
+        grid.innerHTML = CATEGORIES.map(cat => `
+            <button onclick="filterByCategory('${cat.name}')" class="flex flex-col items-center gap-2 p-4 bg-white rounded-xl shadow-sm hover:shadow-md border transition-all hover:-translate-y-1 cursor-pointer">
+                <div class="w-14 h-14 ${cat.color} rounded-full flex items-center justify-center">
+                    <i class="fas ${cat.icon} text-xl"></i>
+                </div>
+                <span class="text-sm font-medium text-gray-700">${cat.name}</span>
+            </button>
+        `).join('');
+    }
+
+    function renderCategoryFilters() {
+        const container = document.querySelector('.cat-filter').parentElement;
+        const cats = [...new Set(products.map(p => p.category))];
+        container.innerHTML = `
+            <button onclick="filterByCategory('all')" class="cat-filter px-4 py-2 rounded-full text-sm font-medium transition-colors ${currentCategory === 'all' ? 'bg-brand-500 text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}" data-cat="all">All</button>
+            ${cats.map(cat => `
+                <button onclick="filterByCategory('${cat}')" class="cat-filter px-4 py-2 rounded-full text-sm font-medium transition-colors ${currentCategory === cat ? 'bg-brand-500 text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}" data-cat="${cat}">${cat}</button>
+            `).join('')}
+        `;
+    }
+
+    function filterByCategory(cat) {
+        currentCategory = cat;
+        renderCategoryFilters();
+        renderProducts();
+    }
+
+    // ========== PRODUCTS ==========
+    function getFilteredProducts() {
+        let filtered = currentCategory === 'all' ? [...products] : products.filter(p => p.category === currentCategory);
+        const search = document.getElementById('searchInput')?.value?.toLowerCase() || '';
+        if (search) {
+            filtered = filtered.filter(p => 
+                p.name.toLowerCase().includes(search) || 
+                p.category.toLowerCase().includes(search) ||
+                (p.description || '').toLowerCase().includes(search)
+            );
+        }
+        return filtered;
+    }
+
+    function filterProducts() {
+        renderProducts();
+    }
+
+    function renderProducts() {
+        const filtered = getFilteredProducts();
+        const grid = document.getElementById('productsGrid');
+        const noProducts = document.getElementById('noProducts');
+
+        if (filtered.length === 0) {
+            grid.innerHTML = '';
+            noProducts.classList.remove('hidden');
+            return;
+        }
+        noProducts.classList.add('hidden');
+
+        grid.innerHTML = filtered.map(p => {
+            const discount = p.originalPrice ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
+            const stars = renderStars(p.rating || 4);
+            return `
+            <div class="bg-white rounded-xl shadow-sm border overflow-hidden card-hover group">
+                <div class="relative overflow-hidden aspect-square bg-gray-100">
+                    <img src="${p.image || 'https://via.placeholder.com/400x400?text=' + encodeURIComponent(p.name)}" 
+                         alt="${p.name}" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                         onerror="this.src='https://via.placeholder.com/400x400?text=MMART'">
+                    ${discount > 0 ? `<span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">-${discount}%</span>` : ''}
+                    <button onclick="addToCart(${p.id})" class="absolute bottom-3 right-3 bg-brand-600 hover:bg-brand-700 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
+                        <i class="fas fa-cart-plus"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <span class="text-xs text-brand-600 font-semibold uppercase tracking-wider">${p.category}</span>
+                    <h3 class="font-semibold text-gray-900 mt-1 line-clamp-2 leading-snug">${p.name}</h3>
+                    <div class="flex items-center gap-1 mt-2">
+                        ${stars}
+                        <span class="text-xs text-gray-400 ml-1">(${p.reviews || 0})</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-3">
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-xl font-bold text-gray-900">$${p.price.toFixed(2)}</span>
+                            ${p.originalPrice ? `<span class="text-sm text-gray-400 line-through">$${p.originalPrice.toFixed(2)}</span>` : ''}
+                        </div>
+                        <button onclick="addToCart(${p.id})" class="md:hidden bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium py-1.5 px-3 rounded-lg transition-colors">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function renderStars(rating) {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            if (i <= Math.floor(rating)) stars += '<i class="fas fa-star text-yellow-400 text-xs"></i>';
+            else if (i - 0.5 <= rating) stars += '<i class="fas fa-star-half-alt text-yellow-400 text-xs"></i>';
+            else stars += '<i class="far fa-star text-gray-300 text-xs"></i>';
+        }
+        return stars;
+    }
+
+    // ========== CART ==========
+    function addToCart(productId) {
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+
+        const existing = cart.find(c => c.id === productId);
+        if (existing) {
+            existing.qty++;
+        } else {
+            cart.push({ id: productId, qty: 1 });
+        }
+        saveCart();
+        updateCartUI();
+        showToast(`${product.name} added to cart!`);
+    }
+
+    function removeFromCart(productId) {
+        cart = cart.filter(c => c.id !== productId);
+        saveCart();
+        updateCartUI();
+    }
+
+    function updateCartQty(productId, delta) {
+        const item = cart.find(c => c.id === productId);
+        if (!item) return;
+        item.qty += delta;
+        if (item.qty <= 0) {
+            removeFromCart(productId);
+            return;
+        }
+        saveCart();
+        updateCartUI();
+    }
+
+    function getCartTotal() {
+        let subtotal = 0;
+        cart.forEach(c => {
+            const p = products.find(pr => pr.id === c.id);
+            if (p) subtotal += p.price * c.qty;
+        });
+        const shipping = subtotal > 49 ? 0 : 5.99;
+        return { subtotal, shipping, tax: subtotal * 0.08, total: subtotal + shipping + subtotal * 0.08 };
+    }
+
+    function updateCartUI() {
+        const countEl = document.getElementById('cartCount');
+        const totalQty = cart.reduce((s, c) => s + c.qty, 0);
+        countEl.textContent = totalQty;
+        countEl.classList.toggle('hidden', totalQty === 0);
+
+        const cartItemsEl = document.getElementById('cartItems');
+        const cartFooter = document.getElementById('cartFooter');
+
+        const emptyCartHTML = '<div class="text-center py-16 text-gray-400"><i class="fas fa-cart-plus text-5xl mb-4"></i><p class="text-lg">Your cart is empty</p><p class="text-sm mt-1">Add some awesome products!</p></div>';
+
+        if (cart.length === 0) {
+            cartItemsEl.innerHTML = emptyCartHTML;
+            cartFooter.classList.add('hidden');
+            return;
+        }
+
+        cartFooter.classList.remove('hidden');
+        cartItemsEl.innerHTML = cart.map(c => {
+            const p = products.find(pr => pr.id === c.id);
+            if (!p) return '';
+            return `
+            <div class="flex gap-3 bg-gray-50 rounded-lg p-3 slide-in">
+                <img src="${p.image || 'https://via.placeholder.com/80?text=M'}" alt="${p.name}" class="w-16 h-16 rounded-lg object-cover flex-shrink-0" onerror="this.src='https://via.placeholder.com/80?text=M'">
+                <div class="flex-1 min-w-0">
+                    <h4 class="text-sm font-semibold text-gray-900 truncate">${p.name}</h4>
+                    <p class="text-sm text-brand-600 font-bold">$${p.price.toFixed(2)}</p>
+                    <div class="flex items-center gap-2 mt-1">
+                        <button onclick="updateCartQty(${p.id}, -1)" class="w-6 h-6 rounded bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-xs font-bold">-</button>
+                        <span class="text-sm font-medium w-4 text-center">${c.qty}</span>
+                        <button onclick="updateCartQty(${p.id}, 1)" class="w-6 h-6 rounded bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-xs font-bold">+</button>
+                    </div>
+                </div>
+                <div class="flex flex-col items-end justify-between">
+                    <button onclick="removeFromCart(${p.id})" class="text-red-400 hover:text-red-600 text-sm"><i class="fas fa-trash"></i></button>
+                    <span class="text-sm font-bold text-gray-900">$${(p.price * c.qty).toFixed(2)}</span>
+                </div>
+            </div>`;
+        }).join('');
+
+        const totals = getCartTotal();
+        document.getElementById('subtotal').textContent = '$' + totals.subtotal.toFixed(2);
+        document.getElementById('shippingCost').textContent = totals.shipping === 0 ? 'FREE' : '$' + totals.shipping.toFixed(2);
+        document.getElementById('cartTotal').textContent = '$' + totals.total.toFixed(2);
+    }
+
+    function toggleCart() {
+        const sidebar = document.getElementById('cartSidebar');
+        const overlay = document.getElementById('cartOverlay');
+        const isOpen = !sidebar.classList.contains('translate-x-full');
+        
+        if (isOpen) {
+            sidebar.classList.add('translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        } else {
+            sidebar.classList.remove('translate-x-full');
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function saveCart() {
+        localStorage.setItem('mmart_cart', JSON.stringify(cart));
+    }
+
+    // ========== CHECKOUT ==========
+    function renderCheckout() {
+        const totals = getCartTotal();
+        document.getElementById('checkSubtotal').textContent = '$' + totals.subtotal.toFixed(2);
+        document.getElementById('checkShipping').textContent = totals.shipping === 0 ? 'FREE' : '$' + totals.shipping.toFixed(2);
+        document.getElementById('checkTax').textContent = '$' + totals.tax.toFixed(2);
+        document.getElementById('checkTotal').textContent = '$' + totals.total.toFixed(2);
+        document.getElementById('payAmount').textContent = '$' + totals.total.toFixed(2);
+
+        document.getElementById('checkoutItems').innerHTML = cart.map(c => {
+            const p = products.find(pr => pr.id === c.id);
+            if (!p) return '';
+            return `
+            <div class="flex items-center gap-3">
+                <img src="${p.image || 'https://via.placeholder.com/50?text=M'}" class="w-12 h-12 rounded-lg object-cover" onerror="this.src='https://via.placeholder.com/50?text=M'">
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate">${p.name}</p>
+                    <p class="text-xs text-gray-500">Qty: ${c.qty}</p>
+                </div>
+                <span class="text-sm font-bold text-gray-900">$${(p.price * c.qty).toFixed(2)}</span>
+            </div>`;
+        }).join('');
+    }
+
+    function formatCardNumber(input) {
+        let v = input.value.replace(/\D/g, '').substring(0, 16);
+        input.value = v.replace(/(.{4})/g, '$1 ').trim();
+    }
+
+    function formatExpiry(input) {
+        let v = input.value.replace(/\D/g, '').substring(0, 4);
+        if (v.length >= 2) v = v.substring(0, 2) + '/' + v.substring(2);
+        input.value = v;
+    }
+
+    function processPayment() {
+        // Validate
+        const fields = ['shipFirst', 'shipLast', 'shipEmail', 'shipAddress', 'shipCity', 'shipZip', 'cardNumber', 'cardName', 'cardExpiry', 'cardCVV'];
+        let valid = true;
+        fields.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el.value.trim()) {
+                el.classList.add('border-red-500');
+                valid = false;
+            } else {
+                el.classList.remove('border-red-500');
             }
         });
 
-        // --- LOGIC: STORAGE ---
-        function loadState() {
-            const saved = localStorage.getItem('ai_builder_state');
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                state.projects = parsed.projects || [];
-                // Merge settings to ensure URL is correct even if updated in future
-                state.settings = { ...state.settings, ...parsed.settings };
-            }
+        if (!valid) {
+            showToast('Please fill in all required fields', 'error');
+            return;
+        }
+
+        if (cart.length === 0) {
+            showToast('Your cart is empty!', 'error');
+            return;
+        }
+
+        // Simulate payment processing
+        const btn = document.querySelector('#page-checkout button[onclick="processPayment()"]');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+
+        setTimeout(() => {
+            const totals = getCartTotal();
+            const orderNum = 'MM-' + Date.now().toString(36).toUpperCase();
             
-            // Populate Settings Modal
-            els.inputs.url.value = state.settings.url;
-            els.inputs.key.value = state.settings.key;
-            els.inputs.model.value = state.settings.model;
+            document.getElementById('orderNumber').textContent = orderNum;
+            document.getElementById('successDetails').innerHTML = `
+                <p><strong>Name:</strong> ${document.getElementById('shipFirst').value} ${document.getElementById('shipLast').value}</p>
+                <p><strong>Email:</strong> ${document.getElementById('shipEmail').value}</p>
+                <p><strong>Address:</strong> ${document.getElementById('shipAddress').value}, ${document.getElementById('shipCity').value} ${document.getElementById('shipZip').value}</p>
+                <p><strong>Items:</strong> ${cart.reduce((s, c) => s + c.qty, 0)}</p>
+                <p><strong>Total Paid:</strong> <span class="text-brand-700 font-bold">$${totals.total.toFixed(2)}</span></p>
+                <p class="mt-2 text-brand-600"><i class="fas fa-check-circle mr-1"></i> Payment successful via Credit Card</p>
+            `;
+
+            // Clear cart
+            cart = [];
+            saveCart();
+            updateCartUI();
+
+            // Reset form
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-lock mr-2"></i>Pay Now <span id="payAmount">$0.00</span>';
+            fields.forEach(id => document.getElementById(id).value = '');
+
+            showPage('success');
+        }, 2000);
+    }
+
+    // ========== ADMIN ==========
+    function toggleAddProduct() {
+        if (!isAdminAuthenticated()) {
+            showToast('Please login to admin panel first', 'error');
+            return;
+        }
+        const form = document.getElementById('addProductForm');
+        form.classList.toggle('hidden');
+    }
+
+    function addProduct() {
+        if (!isAdminAuthenticated()) {
+            showToast('Unauthorized: Admin login required', 'error');
+            return;
         }
 
-        function saveState() {
-            localStorage.setItem('ai_builder_state', JSON.stringify(state));
+        const name = document.getElementById('prodName').value.trim();
+        const price = parseFloat(document.getElementById('prodPrice').value);
+        const category = document.getElementById('prodCategory').value;
+        const image = document.getElementById('prodImage').value.trim();
+        const desc = document.getElementById('prodDesc').value.trim();
+        const origPrice = parseFloat(document.getElementById('prodOrigPrice').value) || null;
+        const rating = parseFloat(document.getElementById('prodRating').value) || 4.0;
+
+        if (!name || isNaN(price) || !category) {
+            showToast('Please fill in Name, Price, and Category', 'error');
+            return;
         }
 
-        // --- LOGIC: SETTINGS ---
-        function toggleSettings() {
-            els.modal.classList.toggle('hidden');
-        }
+        const newProduct = {
+            id: nextId++,
+            name,
+            price,
+            originalPrice: origPrice,
+            category,
+            rating: Math.min(5, Math.max(1, rating)),
+            reviews: Math.floor(Math.random() * 500) + 10,
+            description: desc || 'Quality product from MMART.',
+            image: image || null
+        };
 
-        function saveSettings() {
-            state.settings.url = els.inputs.url.value.trim();
-            state.settings.key = els.inputs.key.value.trim();
-            state.settings.model = els.inputs.model.value.trim();
-            saveState();
-            toggleSettings();
-            alert("Settings Saved!");
-        }
+        products.push(newProduct);
+        saveProducts();
+        renderProducts();
+        renderCategoryFilters();
+        renderAdminProducts();
+        updateAdminStats();
 
-        // --- LOGIC: PROJECTS ---
-        function createNewProject() {
-            const newProject = {
-                id: Date.now().toString(),
-                name: `Project ${state.projects.length + 1}`,
-                code: "",
-                history: [] // Keep conversation context if needed, currently simplified
-            };
-            state.projects.unshift(newProject);
-            state.currentProjectId = newProject.id;
-            saveState();
-            renderSidebar();
-            loadProject(newProject.id);
-        }
+        // Reset form
+        ['prodName', 'prodPrice', 'prodCategory', 'prodImage', 'prodDesc', 'prodOrigPrice', 'prodRating'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el.tagName === 'SELECT') el.selectedIndex = 0;
+            else el.value = '';
+        });
+        toggleAddProduct();
+        showToast('Product added successfully!');
+    }
 
-        function renderSidebar() {
-            els.sidebar.innerHTML = '';
-            state.projects.forEach(p => {
-                const div = document.createElement('div');
-                const isActive = p.id === state.currentProjectId;
-                div.className = `p-2 rounded cursor-pointer flex justify-between items-center group ${isActive ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-800'}`;
-                div.onclick = () => loadProject(p.id);
-                div.innerHTML = `
-                    <span class="truncate text-sm">${p.name}</span>
-                    <button onclick="deleteProject(event, '${p.id}')" class="opacity-0 group-hover:opacity-100 text-xs hover:text-red-400">
-                        <i class="fas fa-trash"></i>
+    function deleteProduct(id) {
+        if (!isAdminAuthenticated()) {
+            showToast('Unauthorized: Admin login required', 'error');
+            return;
+        }
+        if (!confirm('Are you sure you want to delete this product?')) return;
+        products = products.filter(p => p.id !== id);
+        cart = cart.filter(c => c.id !== id);
+        saveProducts();
+        saveCart();
+        renderProducts();
+        renderCategoryFilters();
+        renderAdminProducts();
+        updateAdminStats();
+        updateCartUI();
+        showToast('Product deleted');
+    }
+
+    function renderAdminProducts() {
+        const tbody = document.getElementById('adminProductList');
+        const noProducts = document.getElementById('adminNoProducts');
+
+        if (products.length === 0) {
+            tbody.innerHTML = '';
+            noProducts.classList.remove('hidden');
+            return;
+        }
+        noProducts.classList.add('hidden');
+
+        tbody.innerHTML = products.map(p => `
+            <tr class="hover:bg-gray-50 transition-colors">
+                <td class="py-3 px-4">
+                    <div class="flex items-center gap-3">
+                        <img src="${p.image || 'https://via.placeholder.com/40?text=M'}" class="w-10 h-10 rounded-lg object-cover" onerror="this.src='https://via.placeholder.com/40?text=M'">
+                        <div>
+                            <p class="font-medium text-gray-900 text-sm">${p.name}</p>
+                            <p class="text-xs text-gray-500 truncate max-w-xs">${p.description || ''}</p>
+                        </div>
+                    </div>
+                </td>
+                <td class="py-3 px-4"><span class="text-xs font-medium bg-gray-100 px-2 py-1 rounded-full">${p.category}</span></td>
+                <td class="py-3 px-4 font-bold text-gray-900">$${p.price.toFixed(2)}</td>
+                <td class="py-3 px-4">${renderStars(p.rating || 4)} <span class="text-xs text-gray-400 ml-1">${p.rating || 4}</span></td>
+                <td class="py-3 px-4 text-right">
+                    <button onclick="deleteProduct(${p.id})" class="text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-1 rounded-lg transition-colors text-sm font-medium">
+                        <i class="fas fa-trash mr-1"></i>Delete
                     </button>
-                `;
-                els.sidebar.appendChild(div);
-            });
-        }
+                </td>
+            </tr>
+        `).join('');
+    }
 
-        function deleteProject(e, id) {
-            e.stopPropagation();
-            if(!confirm("Delete this project?")) return;
-            state.projects = state.projects.filter(p => p.id !== id);
-            if (state.currentProjectId === id) {
-                state.currentProjectId = state.projects.length > 0 ? state.projects[0].id : null;
-            }
-            saveState();
-            renderSidebar();
-            if (state.currentProjectId) loadProject(state.currentProjectId);
-            else createNewProject();
-        }
+    function updateAdminStats() {
+        document.getElementById('statProducts').textContent = products.length;
+        const cats = [...new Set(products.map(p => p.category))];
+        document.getElementById('statCategories').textContent = cats.length;
+        const avg = products.length > 0 ? products.reduce((s, p) => s + p.price, 0) / products.length : 0;
+        document.getElementById('statAvgPrice').textContent = '$' + avg.toFixed(0);
+    }
 
-        function loadProject(id) {
-            state.currentProjectId = id;
-            const project = state.projects.find(p => p.id === id);
-            if (!project) return;
+    function saveProducts() {
+        localStorage.setItem('mmart_products', JSON.stringify(products));
+    }
 
-            els.projectName.innerText = project.name;
-            updateWorkspace(project.code);
-            renderSidebar(); // Update active highlight
-        }
+    // ========== UTILS ==========
+    function toggleMobileMenu() {
+        document.getElementById('mobileMenu').classList.toggle('hidden');
+    }
 
-        // --- LOGIC: UI UPDATES ---
-        function updateWorkspace(htmlCode) {
-            // Update Code Editor
-            els.codeEditor.value = htmlCode;
-            
-            // Update Preview
-            if (htmlCode.trim()) {
-                const blob = new Blob([htmlCode], { type: 'text/html' });
-                els.previewFrame.src = URL.createObjectURL(blob);
-                els.emptyState.classList.add('hidden');
-            } else {
-                els.previewFrame.src = 'about:blank';
-                els.emptyState.classList.remove('hidden');
-            }
-        }
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        const icon = type === 'success' ? 'fa-check-circle text-green-500' : 'fa-exclamation-circle text-red-500';
+        toast.className = 'toast bg-white shadow-lg rounded-lg px-4 py-3 flex items-center gap-3 border max-w-sm';
+        toast.innerHTML = `<i class="fas ${icon}"></i><span class="text-sm text-gray-700">${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
 
-        function switchView(view) {
-            if (view === 'preview') {
-                els.previewContainer.classList.remove('hidden');
-                els.codeContainer.classList.add('hidden');
-                els.btns.preview.className = "px-3 py-1 text-sm rounded bg-gray-700 text-white shadow";
-                els.btns.code.className = "px-3 py-1 text-sm rounded text-gray-400 hover:text-white";
-            } else {
-                els.previewContainer.classList.add('hidden');
-                els.codeContainer.classList.remove('hidden');
-                els.btns.preview.className = "px-3 py-1 text-sm rounded text-gray-400 hover:text-white";
-                els.btns.code.className = "px-3 py-1 text-sm rounded bg-gray-700 text-white shadow";
-            }
-        }
-
-        function downloadCode() {
-            const project = state.projects.find(p => p.id === state.currentProjectId);
-            if (!project || !project.code) return alert("No code to download.");
-            
-            const blob = new Blob([project.code], { type: 'text/html' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'index.html';
-            a.click();
-        }
-
-        function handleEnter(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                generateSite();
-            }
-        }
-
-        // --- CORE LOGIC: API INTERACTION ---
-        async function generateSite() {
-            const prompt = els.prompt.value.trim();
-            if (!prompt) return;
-            
-            if (!state.settings.key) {
-                alert("Please enter your API Key in Settings.");
-                toggleSettings();
-                return;
-            }
-
-            // UI Loading State
-            els.loader.classList.remove('hidden');
-            els.prompt.disabled = true;
-
-            const project = state.projects.find(p => p.id === state.currentProjectId);
-            
-            // Construct Messages
-            const messages = [
-                { role: "system", content: SYSTEM_PROMPT },
-                // If there is existing code, pass it as context for iteration
-                ...(project.code ? [{ role: "assistant", content: project.code }] : []),
-                { role: "user", content: prompt }
-            ];
-
-            try {
-                // 1. Fetch
-                const response = await fetch(state.settings.url, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${state.settings.key}`,
-                        "Content-Type": "application/json",
-                        // Optional: "HTTP-Referer" for OpenRouter rankings
-                        "HTTP-Referer": window.location.href,
-                    },
-                    body: JSON.stringify({
-                        model: state.settings.model,
-                        messages: messages
-                    })
-                });
-
-                // 2. Anti-Crash Logic: Get Text First
-                const rawText = await response.text();
-
-                // 3. Check Status
-                if (!response.ok) {
-                    throw new Error(`API Error ${response.status}: ${rawText}`);
-                }
-
-                // 4. Safe Parse
-                const data = JSON.parse(rawText);
-                const content = data.choices[0].message.content;
-
-                // 5. Clean / Extract Code (Remove Markdown backticks if present)
-                let cleanCode = content;
-                // Regex to find content inside ```html ... ``` or just ``` ... ```
-                const codeBlockRegex = /```html\s*([\s\S]*?)\s*```|```\s*([\s\S]*?)\s*```/i;
-                const match = content.match(codeBlockRegex);
-                
-                if (match) {
-                    cleanCode = match[1] || match[2];
-                }
-                
-                // Update State
-                project.code = cleanCode;
-                
-                // If it's the first edit, rename project based on prompt
-                if (project.code.length < 50) { 
-                   // logic to rename could go here, for now keep "Project X"
-                }
-
-                saveState();
-                updateWorkspace(project.code);
-                els.prompt.value = ''; // Clear input
-
-            } catch (error) {
-                console.error(error);
-                alert(error.message);
-            } finally {
-                els.loader.classList.add('hidden');
-                els.prompt.disabled = false;
-                els.prompt.focus();
-            }
-        }
+    // ========== STARTUP ==========
+    document.addEventListener('DOMContentLoaded', init);
     </script>
+
 </body>
 </html>
